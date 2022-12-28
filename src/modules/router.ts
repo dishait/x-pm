@@ -1,11 +1,11 @@
 import type { App } from 'vue'
 import {
 	createRouter,
-	createWebHistory
+	createWebHashHistory
 } from 'vue-router/auto'
 
 const router = createRouter({
-	history: createWebHistory()
+	history: createWebHashHistory()
 })
 
 export default (app: App) => app.use(router)
