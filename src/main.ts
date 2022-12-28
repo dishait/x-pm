@@ -1,10 +1,14 @@
-import { createApp } from 'vue'
-import "./style.css"
-import App from './App.vue'
-import './samples/node-api'
+import 'modern-css-reset'
 
-createApp(App)
-  .mount('#app')
-  .$nextTick(() => {
-    postMessage({ payload: 'removeLoading' }, '*')
-  })
+import 'uno.css'
+
+import { createApp } from 'vue'
+import App from './App.vue'
+
+const app = createApp(App)
+
+app.mount('#app').$nextTick(() => {
+  postMessage({ payload: 'removeLoading' }, '*')
+})
+
+
