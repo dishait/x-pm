@@ -21,15 +21,19 @@ const isDevelopment =
 	!!process.env.VSCODE_DEBUG
 const isProduction = process.env.NODE_ENV === 'production'
 
-// https://vitejs.dev/config/
 export default defineConfig({
+	define: {
+		__VUE_OPTIONS_API__: false // 明确不使用 options api
+	},
 	plugins: [
 		Removelog(),
 		VueRouter({
 			routesFolder: 'src/pages',
 			dts: 'types/typed-router.d.ts'
 		}),
-		Vue(),
+		Vue({
+			reactivityTransform: true // 开启响应式语法糖
+		}),
 		Modules({
 			auto: true
 		}),
