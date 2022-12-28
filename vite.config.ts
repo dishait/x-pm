@@ -5,6 +5,7 @@ import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 
 import Electron from 'vite-plugin-electron'
+import Removelog from 'vite-plugin-removelog'
 import Modules from 'vite-plugin-use-modules'
 import VueRouter from 'unplugin-vue-router/vite'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -23,6 +24,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
+		Removelog(),
 		VueRouter({
 			routesFolder: 'src/pages',
 			dts: 'types/typed-router.d.ts'
