@@ -65,7 +65,7 @@ const scroll = { y: 350 }
 		</template>
 		<template #open="{ record }">
 			<a-space>
-				<a-button status="success" shape="round">
+				<a-button shape="round">
 					<template #icon>
 						<icon-edit @click="openVscode(record.path)" />
 					</template>

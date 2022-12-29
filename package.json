@@ -42,6 +42,7 @@
     "@vueuse/core": "^9.9.0",
     "electron": "^22.0.0",
     "electron-builder": "^23.6.0",
+    "execa": "^6.1.0",
     "modern-css-reset": "^1.4.0",
     "open": "^8.4.0",
     "typescript": "^4.9.4",

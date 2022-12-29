@@ -1,7 +1,7 @@
 import open from 'open'
 export { resolve } from 'node:path'
 export { existsSync } from 'node:fs'
-import { exec } from 'child_process'
+import { execa } from 'execa'
 import { ipcRenderer } from 'electron'
 export { readdir } from 'node:fs/promises'
 
@@ -13,16 +13,7 @@ export async function showDirectoryDialog() {
 }
 
 export function openVscode(path: string) {
-	return new Promise((resolve, reject) => {
-		exec(`code ${path}`, (error, stdout, stderr) => {
-			const _error = error || stderr
-			if (_error) {
-				reject(_error)
-			} else {
-				resolve(stdout)
-			}
-		})
-	})
+	return execa('code', [path])
 }
 
 export function openFileManager(path: string) {
