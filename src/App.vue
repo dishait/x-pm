@@ -2,26 +2,45 @@
 import Zone from './components/Zone.vue'
 import Tabs from './components/Tabs.vue'
 import type { Dirs, Tabs as TabsType } from './types'
+import { Notification } from '@arco-design/web-vue'
+import '@arco-design/web-vue/es/notification/style/css.js'
 
-let tabs: TabsType = $ref([
-	{
-		key: '1',
-		title: 'Demo'
-	},
-	{
-		key: '2',
-		title: 'Work'
-	}
-])
+const tabs = useStorage<TabsType>('tabs', [])
 
 function onAdd(dirs: Dirs) {
-	console.log('onAdd', dirs)
+	const news: TabsType = []
+
+	for (const dir of dirs) {
+		const exist = tabs.value.some(tab => {
+			return tab.key === dir.path
+		})
+
+		if (exist) {
+			Notification.warning({
+				closable: true,
+				title: `${dir.path}`,
+				content: '该目录已存在，请勿反复添加'
+			})
+			continue
+		}
+
+		news.push({
+			key: dir.path,
+			title: dir.name
+		})
+
+		Notification.success({
+			closable: true,
+			title: `${dir.path}`,
+			content: '添加目录成功'
+		})
+	}
+
+	tabs.value.push(...news)
 }
 
-function onTabAdd() {}
-
 function onTabDelete(key: string | number) {
-	tabs = tabs.filter(tab => tab.key !== key)
+	tabs.value = tabs.value.filter(tab => tab.key !== key)
 }
 </script>
 
@@ -58,10 +77,7 @@ function onTabDelete(key: string | number) {
 					:style="{ width: '320px' }"
 					placeholder="Please enter something" />
 
-				<Tabs
-					:tabs="tabs"
-					@onAdd="onTabAdd"
-					@onDelete="onTabDelete">
+				<Tabs :tabs="tabs" @onDelete="onTabDelete">
 					<a-empty />
 				</Tabs>
 			</a-space>
