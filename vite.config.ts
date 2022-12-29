@@ -6,12 +6,9 @@ import Vue from '@vitejs/plugin-vue'
 
 import Electron from 'vite-plugin-electron'
 import Removelog from 'vite-plugin-removelog'
-import Modules from 'vite-plugin-use-modules'
-import VueRouter from 'unplugin-vue-router/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Renderer from 'vite-plugin-electron-renderer'
 import Components from 'unplugin-vue-components/vite'
-import { VueRouterAutoImports } from 'unplugin-vue-router'
 import { ArcoResolver } from 'unplugin-vue-components/resolvers'
 
 rmSync('dist-electron', { recursive: true, force: true })
@@ -25,28 +22,25 @@ export default defineConfig({
 	define: {
 		__VUE_OPTIONS_API__: false // 明确不使用 options api
 	},
+	optimizeDeps: {
+		include: ['@arco-design/web-vue']
+	},
 	plugins: [
 		Removelog(),
-		VueRouter({
-			routesFolder: 'src/pages',
-			dts: 'types/typed-router.d.ts'
-		}),
 		Vue({
 			reactivityTransform: true // 开启响应式语法糖
-		}),
-		Modules({
-			auto: true
 		}),
 		Unocss(),
 		AutoImport({
 			dts: './types/auto-imports.d.ts',
 			resolvers: [ArcoResolver()],
-			imports: ['vue', '@vueuse/core', VueRouterAutoImports]
+			imports: ['vue', '@vueuse/core']
 		}),
 		Components({
 			dts: './types/components.d.ts',
 			resolvers: [
 				ArcoResolver({
+					resolveIcons: true,
 					sideEffect: true
 				})
 			]

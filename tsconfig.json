@@ -12,7 +12,7 @@
 		"lib": ["ESNext", "DOM"],
 		"skipLibCheck": true,
 		"noEmit": true,
-		"types": ["vite-plugin-use-modules/client"]
+		"types": ["vue/macros-global", "node"]
 	},
 	"include": ["src", "types"],
 	"references": [{ "path": "./tsconfig.node.json" }]

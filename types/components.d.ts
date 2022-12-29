@@ -8,9 +8,17 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AButton: typeof import('@arco-design/web-vue')['Button']
-    ATable: typeof import('@arco-design/web-vue')['Table']
-    ATableColumn: typeof import('@arco-design/web-vue')['TableColumn']
+    AEmpty: typeof import('@arco-design/web-vue')['Empty']
+    AInputSearch: typeof import('@arco-design/web-vue')['InputSearch']
+    ASpace: typeof import('@arco-design/web-vue')['Space']
+    ATabPane: typeof import('@arco-design/web-vue')['TabPane']
+    ATabs: typeof import('@arco-design/web-vue')['Tabs']
+    DropZone: typeof import('./../src/components/DropZone.vue')['default']
+    IconFolder: typeof import('@arco-design/web-vue/es/icon')['IconFolder']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Table: typeof import('./../src/components/Table.vue')['default']
+    Tabs: typeof import('./../src/components/Tabs.vue')['default']
+    Zone: typeof import('./../src/components/Zone.vue')['default']
   }
 }
