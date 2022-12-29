@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import Zone from './components/Zone.vue'
 import Tabs from './components/Tabs.vue'
-import type { Dirs, Tabs as TabsType } from './types'
-import { Notification, Modal } from '@arco-design/web-vue'
+import Table from './components/Table.vue'
 import '@arco-design/web-vue/es/modal/style/css.js'
+import type { Dirs, Tabs as TabsType } from './types'
+import type { TableData } from '@arco-design/web-vue'
+import { Notification, Modal } from '@arco-design/web-vue'
 import '@arco-design/web-vue/es/notification/style/css.js'
+import {
+	readdir,
+	existsSync,
+	resolve
+} from './samples/node-api'
 
 const tabs = useStorage<TabsType>('tabs', [])
 
@@ -64,6 +71,58 @@ function onDelete(key: string | number) {
 		}
 	})
 }
+
+async function showProjects() {
+	const keys: string[] = []
+	const promises = tabs.value.map(tab => {
+		keys.push(tab.key)
+		return readdir(tab.key, {
+			withFileTypes: true
+		})
+	})
+	const projectDirs = await Promise.all(promises)
+
+	return projectDirs.map((dir, index) => {
+		const key = keys[index]
+		return dir
+			.filter(p => p.isDirectory())
+			.map(p => {
+				const name = p.name
+				const root = resolve(key, p.name)
+				function isNode() {
+					return existsSync(resolve(root, 'package.json'))
+				}
+
+				function isDeno() {
+					return (
+						existsSync(resolve(root, 'mod.ts')) ||
+						existsSync(resolve(root, 'deno.jsonc')) ||
+						existsSync(resolve(root, 'deno.json'))
+					)
+				}
+
+				const type = isNode()
+					? 'node'
+					: isDeno()
+					? 'deno'
+					: 'unknown'
+
+				return {
+					name,
+					type
+				}
+			})
+	})
+}
+
+const projects = computedAsync<TableData[][]>(
+	showProjects,
+	[]
+)
+
+const projectsCounter = computed(() => {
+	return projects.value.flat().length
+})
 </script>
 
 <template>
@@ -100,12 +159,14 @@ function onDelete(key: string | number) {
 					placeholder="请输入你要搜索的项目" />
 
 				<Tabs :tabs="tabs" @onDelete="onDelete">
-					<a-empty />
+					<template #default="{ index }">
+						<Table :data="projects[index] || []" />
+					</template>
+
 					<template #extra>
-						<a-space>
-							<a-button> 创建 </a-button>
-							<a-button status="danger"> 删除 </a-button>
-						</a-space>
+						<a-statistic
+							animation
+							:value="projectsCounter" />
 					</template>
 				</Tabs>
 			</a-space>

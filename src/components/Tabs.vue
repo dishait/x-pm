@@ -36,7 +36,10 @@ const handleDelete = (
 			:key="item.key"
 			:title="item.title"
 			closable>
-			<slot />
+			<slot
+				:key="item.key"
+				:title="item.title"
+				:index="index" />
 		</a-tab-pane>
 	</a-tabs>
 </template>

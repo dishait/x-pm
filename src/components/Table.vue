@@ -1,24 +1,14 @@
 <script setup lang="ts">
 import type {
-	TableColumnData,
-	TableData
+	TableData,
+	TableColumnData
 } from '@arco-design/web-vue'
-const rowSelection = {
-	showCheckedAll: true
-}
 
 const columns: TableColumnData[] = [
 	{
 		title: 'name',
 		dataIndex: 'name',
-		align: 'center'
-	},
-	{
-		title: 'description',
-		dataIndex: 'description',
-		align: 'center',
-		slotName: 'description',
-		width: 400
+		width: 200
 	},
 	{
 		title: 'type',
@@ -32,22 +22,18 @@ const columns: TableColumnData[] = [
 		align: 'center'
 	}
 ]
-const data: TableData[] = reactive([
-	{
-		key: '1',
-		name: 'Demo',
-		type: 'node',
-		description: '测试'
-	}
-])
+
+defineProps<{
+	data: TableData[]
+}>()
 
 const colors = {
-	root: 'red',
 	node: 'green',
-	deno: 'default'
+	deno: 'blue',
+	unknown: 'gray'
 }
 
-function handleTagColor(type: 'root' | 'node' | 'deno') {
+function handleTagColor(type: 'node' | 'deno') {
 	return colors[type]
 }
 </script>
@@ -55,17 +41,16 @@ function handleTagColor(type: 'root' | 'node' | 'deno') {
 <template>
 	<a-table
 		:data="data"
+		:scroll="{
+			y: 350
+		}"
 		:columns="columns"
 		column-resizable
-		:pagination="false"
-		:row-selection="rowSelection">
+		:pagination="false">
 		<template #type="{ record }">
 			<a-tag bordered :color="handleTagColor(record.type)">
 				{{ record.type }}
 			</a-tag>
-		</template>
-		<template #description="{ record }">
-			<a-input v-model="record.description" />
 		</template>
 		<template #open="{ record }">
 			<a-space>
