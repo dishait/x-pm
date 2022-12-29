@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     ALayoutHeader: typeof import('@arco-design/web-vue')['LayoutHeader']
     AList: typeof import('@arco-design/web-vue')['List']
     AListItem: typeof import('@arco-design/web-vue')['ListItem']
+    APopconfirm: typeof import('@arco-design/web-vue')['Popconfirm']
     APopover: typeof import('@arco-design/web-vue')['Popover']
     ASpace: typeof import('@arco-design/web-vue')['Space']
     ATabPane: typeof import('@arco-design/web-vue')['TabPane']

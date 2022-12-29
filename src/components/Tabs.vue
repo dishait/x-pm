@@ -26,13 +26,9 @@ const handleDelete = (
 		editable
 		@add="handleAdd"
 		@delete="handleDelete"
-		class="penetration"
-		auto-switch>
+		class="penetration">
 		<template #extra>
-			<a-space>
-				<a-button status="success"> Create </a-button>
-				<a-button status="danger"> Destroy </a-button>
-			</a-space>
+			<slot name="extra" />
 		</template>
 
 		<a-tab-pane

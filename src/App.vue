@@ -2,7 +2,8 @@
 import Zone from './components/Zone.vue'
 import Tabs from './components/Tabs.vue'
 import type { Dirs, Tabs as TabsType } from './types'
-import { Notification } from '@arco-design/web-vue'
+import { Notification, Modal } from '@arco-design/web-vue'
+import '@arco-design/web-vue/es/modal/style/css.js'
 import '@arco-design/web-vue/es/notification/style/css.js'
 
 const tabs = useStorage<TabsType>('tabs', [])
@@ -39,8 +40,29 @@ function onAdd(dirs: Dirs) {
 	tabs.value.push(...news)
 }
 
-function onTabDelete(key: string | number) {
-	tabs.value = tabs.value.filter(tab => tab.key !== key)
+function onDelete(key: string | number) {
+	Modal.info({
+		title: `真的要移除目录?`,
+		content: `${key}`,
+		cancelText: '算了',
+		closable: true,
+		okText: '移除',
+		draggable: true,
+		hideCancel: false,
+		simple: false,
+		width: '400px',
+		onOk() {
+			const index = tabs.value.findIndex(
+				tab => tab.key === key
+			)
+			tabs.value.splice(index)
+			Notification.info({
+				closable: true,
+				title: `${key}`,
+				content: '移除目录成功'
+			})
+		}
+	})
 }
 </script>
 
@@ -75,10 +97,16 @@ function onTabDelete(key: string | number) {
 			<a-space direction="vertical" size="large">
 				<a-input-search
 					:style="{ width: '320px' }"
-					placeholder="Please enter something" />
+					placeholder="请输入你要搜索的项目" />
 
-				<Tabs :tabs="tabs" @onDelete="onTabDelete">
+				<Tabs :tabs="tabs" @onDelete="onDelete">
 					<a-empty />
+					<template #extra>
+						<a-space>
+							<a-button> 创建 </a-button>
+							<a-button status="danger"> 删除 </a-button>
+						</a-space>
+					</template>
 				</Tabs>
 			</a-space>
 		</a-space>
