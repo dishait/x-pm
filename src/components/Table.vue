@@ -3,6 +3,10 @@ import type {
 	TableData,
 	TableColumnData
 } from '@arco-design/web-vue'
+import {
+	openVscode,
+	openFileManager
+} from '../samples/node-api'
 
 const columns: TableColumnData[] = [
 	{
@@ -12,9 +16,9 @@ const columns: TableColumnData[] = [
 	},
 	{
 		title: '类型',
-		dataIndex: 'type',
+		dataIndex: 'types',
 		align: 'center',
-		slotName: 'type'
+		slotName: 'types'
 	},
 	{
 		title: '启动',
@@ -25,6 +29,7 @@ const columns: TableColumnData[] = [
 
 defineProps<{
 	data: TableData[]
+	loading: boolean
 }>()
 
 const colors = {
@@ -33,27 +38,28 @@ const colors = {
 	unknown: 'gray'
 }
 
-function handleTagColor(type: 'node' | 'deno') {
+function showTagColor(type: 'node' | 'deno') {
 	return colors[type]
 }
+
+const scroll = { y: 350 }
 </script>
 
 <template>
 	<a-table
 		:data="data"
-		:scroll="{
-			y: 350
-		}"
+		:scroll="scroll"
 		:columns="columns"
 		column-resizable
+		:loading="loading"
 		:pagination="false">
-		<template #type="{ record }">
+		<template #types="{ record }">
 			<a-space>
 				<a-tag
-					v-for="v of record.type"
-					:key="v"
-					:color="handleTagColor(v)">
-					{{ v }}
+					v-for="type of record.types"
+					:key="type"
+					:color="showTagColor(type)">
+					{{ type }}
 				</a-tag>
 			</a-space>
 		</template>
@@ -61,12 +67,13 @@ function handleTagColor(type: 'node' | 'deno') {
 			<a-space>
 				<a-button status="success" shape="round">
 					<template #icon>
-						<icon-edit />
+						<icon-edit @click="openVscode(record.path)" />
 					</template>
 				</a-button>
 				<a-button status="warning" shape="round">
 					<template #icon>
-						<icon-folder />
+						<icon-folder
+							@click="openFileManager(record.path)" />
 					</template>
 				</a-button>
 			</a-space>

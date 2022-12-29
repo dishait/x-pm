@@ -7,6 +7,7 @@ import type { Dirs, Tabs as TabsType } from './types'
 import type { TableData } from '@arco-design/web-vue'
 import { Notification, Modal } from '@arco-design/web-vue'
 import '@arco-design/web-vue/es/notification/style/css.js'
+
 import {
 	readdir,
 	existsSync,
@@ -72,6 +73,8 @@ function onDelete(key: string | number) {
 	})
 }
 
+const loading = ref(true)
+
 async function showProjects() {
 	const keys: string[] = []
 	const promises = tabs.value.map(tab => {
@@ -82,6 +85,7 @@ async function showProjects() {
 	})
 	const projectDirs = await Promise.all(promises)
 
+	loading.value = false
 	return projectDirs.map((dir, index) => {
 		const key = keys[index]
 		return dir
@@ -89,38 +93,44 @@ async function showProjects() {
 			.map(p => {
 				const name = p.name
 				const root = resolve(key, p.name)
-				const type: string[] = []
+				const types: string[] = []
+
+				function _existsSync(file: string) {
+					return existsSync(resolve(root, file))
+				}
+
 				function isNode() {
-					return existsSync(resolve(root, 'package.json'))
+					return _existsSync('package.json')
 				}
 
 				function isDeno() {
 					return (
-						existsSync(resolve(root, 'mod.ts')) ||
-						existsSync(resolve(root, 'deno.jsonc')) ||
-						existsSync(resolve(root, 'deno.json'))
+						_existsSync('mod.ts') ||
+						_existsSync('deno.jsonc') ||
+						_existsSync('deno.json')
 					)
 				}
 
 				function isUnknown() {
-					return type.length === 0
+					return types.length === 0
 				}
 
 				if (isNode()) {
-					type.push('node')
+					types.push('node')
 				}
 
 				if (isDeno()) {
-					type.push('deno')
+					types.push('deno')
 				}
 
 				if (isUnknown()) {
-					type.push('unknown')
+					types.push('unknown')
 				}
 
 				return {
 					name,
-					type
+					types,
+					path: root
 				}
 			})
 	})
@@ -171,7 +181,9 @@ const projectsCounter = computed(() => {
 
 				<Tabs :tabs="tabs" @onDelete="onDelete">
 					<template #default="{ index }">
-						<Table :data="projects[index] || []" />
+						<Table
+							:loading="loading"
+							:data="projects[index] || []" />
 					</template>
 
 					<template #extra>
