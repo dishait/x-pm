@@ -99,6 +99,12 @@ async function showProjects() {
 					return existsSync(resolve(root, file))
 				}
 
+				function isGo() {
+					return (
+						_existsSync('go.mod') || _existsSync('main.go')
+					)
+				}
+
 				function isNode() {
 					return _existsSync('package.json')
 				}
@@ -113,6 +119,10 @@ async function showProjects() {
 
 				function isUnknown() {
 					return types.length === 0
+				}
+
+				if (isGo()) {
+					types.push('go')
 				}
 
 				if (isNode()) {

@@ -33,8 +33,9 @@ defineProps<{
 }>()
 
 const colors = {
+	go: 'blue',
 	node: 'green',
-	deno: 'blue',
+	deno: 'orangered',
 	unknown: 'gray'
 }
 
