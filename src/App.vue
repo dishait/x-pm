@@ -89,6 +89,7 @@ async function showProjects() {
 			.map(p => {
 				const name = p.name
 				const root = resolve(key, p.name)
+				const type: string[] = []
 				function isNode() {
 					return existsSync(resolve(root, 'package.json'))
 				}
@@ -101,11 +102,21 @@ async function showProjects() {
 					)
 				}
 
-				const type = isNode()
-					? 'node'
-					: isDeno()
-					? 'deno'
-					: 'unknown'
+				function isUnknown() {
+					return type.length === 0
+				}
+
+				if (isNode()) {
+					type.push('node')
+				}
+
+				if (isDeno()) {
+					type.push('deno')
+				}
+
+				if (isUnknown()) {
+					type.push('unknown')
+				}
 
 				return {
 					name,

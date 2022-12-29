@@ -6,18 +6,18 @@ import type {
 
 const columns: TableColumnData[] = [
 	{
-		title: 'name',
+		title: '项目',
 		dataIndex: 'name',
 		width: 200
 	},
 	{
-		title: 'type',
+		title: '类型',
 		dataIndex: 'type',
 		align: 'center',
 		slotName: 'type'
 	},
 	{
-		title: 'open',
+		title: '启动',
 		slotName: 'open',
 		align: 'center'
 	}
@@ -48,9 +48,14 @@ function handleTagColor(type: 'node' | 'deno') {
 		column-resizable
 		:pagination="false">
 		<template #type="{ record }">
-			<a-tag bordered :color="handleTagColor(record.type)">
-				{{ record.type }}
-			</a-tag>
+			<a-space>
+				<a-tag
+					v-for="v of record.type"
+					:key="v"
+					:color="handleTagColor(v)">
+					{{ v }}
+				</a-tag>
+			</a-space>
 		</template>
 		<template #open="{ record }">
 			<a-space>
