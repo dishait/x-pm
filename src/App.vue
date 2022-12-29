@@ -28,7 +28,30 @@ function onTabDelete(key: string | number) {
 <template>
 	<div class="p-10">
 		<a-space direction="vertical" size="large">
-			<Zone @onAdd="onAdd" />
+			<a-popover>
+				<Zone @onAdd="onAdd">
+					<icon-folder-add
+						:size="40"
+						class="!text-gray-400" />
+				</Zone>
+
+				<template #content>
+					<a-list size="small" :bordered="false">
+						<a-list-item>
+							<icon-launch
+								:size="15"
+								class="!text-gray-500" />
+							点击选择
+						</a-list-item>
+						<a-list-item>
+							<icon-drag-arrow
+								:size="15"
+								class="!text-gray-500" />
+							拖入目录
+						</a-list-item>
+					</a-list>
+				</template>
+			</a-popover>
 
 			<a-space direction="vertical" size="large">
 				<a-input-search

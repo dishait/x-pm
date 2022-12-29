@@ -47,6 +47,6 @@ async function selectDirectory() {
 		class="bg-gray-100 cursor-pointer h-20vh flex justify-center items-center rounded"
 		ref="dropZoneRef"
 		@click="selectDirectory">
-		<icon-folder :size="40" class="!text-gray-400" />
+		<slot />
 	</div>
 </template>
