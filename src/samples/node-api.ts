@@ -13,7 +13,9 @@ export async function showDirectoryDialog() {
 }
 
 export function openVscode(path: string) {
-	return execa('code', [path])
+	return execa('code', [path], {
+		detached: true
+	})
 }
 
 export function openFileManager(path: string) {
