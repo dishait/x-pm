@@ -112,3 +112,10 @@ export function useTabs() {
 		onDelete: deleteHook.on
 	}
 }
+
+export function useSearch() {
+	const text = ref('')
+	return {
+		text
+	}
+}

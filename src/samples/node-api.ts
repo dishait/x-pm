@@ -1,7 +1,6 @@
-import open from 'open'
+import { execa } from 'execa'
 export { resolve } from 'node:path'
 export { existsSync } from 'node:fs'
-import { execa } from 'execa'
 import { ipcRenderer } from 'electron'
 export { readdir } from 'node:fs/promises'
 
@@ -18,6 +17,10 @@ export function openVscode(path: string) {
 	})
 }
 
-export function openFileManager(path: string) {
-	return open(path)
+export async function openFileManager(path: string) {
+	const dir = await ipcRenderer.invoke(
+		'openFileManager',
+		path
+	)
+	return dir as string
 }

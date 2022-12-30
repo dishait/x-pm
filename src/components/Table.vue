@@ -17,7 +17,7 @@ const columns: TableColumnData[] = [
 	{
 		title: '项目',
 		dataIndex: 'name',
-		width: 200
+		width: 300
 	},
 	{
 		title: '类型',

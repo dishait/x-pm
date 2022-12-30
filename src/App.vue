@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useTabs } from './samples/use'
 import Zone from './components/Zone.vue'
 import Tabs from './components/Tabs.vue'
 import { defineAsyncComponent } from 'vue'
+import { useTabs, useSearch } from './samples/use'
 import { computedProjects } from './samples/computed'
 
 const Table = defineAsyncComponent(
@@ -27,6 +27,8 @@ const {
 
 onTabAdd(tabs => refresh({ type: 'add', tabs }))
 onTabDelete(index => refresh({ type: 'delete', index }))
+
+const { text: serachText } = useSearch()
 </script>
 
 <template>
@@ -58,6 +60,7 @@ onTabDelete(index => refresh({ type: 'delete', index }))
 			</a-popover>
 
 			<a-input-search
+				v-model="serachText"
 				:style="{ width: '320px' }"
 				placeholder="请输入你要搜索的项目" />
 

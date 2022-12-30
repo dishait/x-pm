@@ -8,6 +8,7 @@ import {
 } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // The built directory structure
 //
@@ -55,6 +56,7 @@ const indexHtml = join(process.env.DIST, 'index.html')
 async function createWindow() {
 	win = new BrowserWindow({
 		title: 'Main window',
+		useContentSize: true,
 		icon: join(process.env.PUBLIC, 'favicon.ico'),
 		webPreferences: {
 			preload,
@@ -137,3 +139,10 @@ ipcMain.handle('showDirectoryDialog', async () => {
 	})
 	return value.filePaths[0]
 })
+
+ipcMain.handle(
+	'openFileManager',
+	(event: any, path: string) => {
+		return shell.openExternal(path)
+	}
+)
