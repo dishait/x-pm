@@ -6,6 +6,19 @@ import type {
 	AsyncComputedOnCancel
 } from '@vueuse/core'
 
+type Modified =
+	| {
+			type: 'reload'
+	  }
+	| {
+			type: 'delete'
+			index: number
+	  }
+	| {
+			type: 'add'
+			tabs: Tabs
+	  }
+
 const _types = [
 	{
 		type: 'node',
@@ -21,98 +34,127 @@ const _types = [
 	}
 ]
 
+async function showProjects(tabs: Tabs) {
+	const paths: string[] = []
+	const readdirs = tabs.map(tab => {
+		paths.push(tab.key)
+		return readdir(tab.key, { withFileTypes: true })
+	})
+
+	const dirs = await Promise.all(readdirs)
+
+	return dirs.map((dir, index) => {
+		const root = paths[index]
+		return dir
+			.filter(p => p.isDirectory())
+			.map(p => {
+				const name = p.name
+				const types: string[] = []
+				const path = resolve(root, name)
+
+				_types.forEach(t => {
+					const exists = t.files.some(file => {
+						return existsSync(resolve(path, file))
+					})
+					if (exists) {
+						types.push(t.type)
+					}
+				})
+
+				function isUnknown() {
+					return types.length === 0
+				}
+
+				if (isUnknown()) {
+					types.push('unknown')
+				}
+
+				return {
+					name,
+					path,
+					types
+				}
+			})
+	})
+}
+
 export function computedProjects(tabs: RemovableRef<Tabs>) {
-	const cachedProjects = ref<TableData[][]>([])
-
+	const lastTotal = ref(0)
 	const refreshRef = ref(true)
+	const evaluating = ref(false)
+	let modified: Modified = { type: 'reload' }
+	const lastProjects = ref<TableData[][]>([])
 
-	async function showProjects(
+	async function normalize(
 		onCancel: AsyncComputedOnCancel
 	) {
 		try {
 			if (!refreshRef.value) {
-				return cachedProjects.value
+				return lastProjects.value
 			}
 
-			const keys: string[] = []
-			const promises = tabs.value.map(tab => {
-				keys.push(tab.key)
-				return readdir(tab.key, {
-					withFileTypes: true
-				})
-			})
-			const projectDirs = await Promise.all(promises)
+			if (modified.type === 'delete') {
+				const splicedProjects = lastProjects.value.splice(
+					modified.index,
+					1
+				)
+				lastTotal.value -= splicedProjects.flat().length
+				return lastProjects.value
+			}
 
-			cachedProjects.value = projectDirs.map(
-				(dir, index) => {
-					const key = keys[index]
-					return dir
-						.filter(p => p.isDirectory())
-						.map(p => {
-							const name = p.name
-							const types: string[] = []
-							const path = resolve(key, name)
+			if (modified.type === 'add') {
+				const newProjects = await showProjects(
+					modified.tabs
+				)
+				lastTotal.value += newProjects.flat().length
 
-							_types.forEach(t => {
-								const exists = t.files.some(file => {
-									return existsSync(resolve(path, file))
-								})
+				lastProjects.value.push(...newProjects)
+				return lastProjects.value
+			}
 
-								if (exists) {
-									types.push(t.type)
-								}
-							})
+			if (modified.type === 'reload') {
+				const newProjects = await showProjects(tabs.value)
+				lastTotal.value = newProjects.flat().length
+				lastProjects.value = newProjects
+				return lastProjects.value
+			}
 
-							function isUnknown() {
-								return types.length === 0
-							}
-
-							if (isUnknown()) {
-								types.push('unknown')
-							}
-
-							return {
-								name,
-								path,
-								types
-							}
-						})
-				}
-			)
-			return cachedProjects.value
+			return lastProjects.value
 		} catch (error) {
 			onCancel(() => {
 				refreshRef.value = true
 			})
-			return cachedProjects.value
+			return lastProjects.value
 		} finally {
 			refreshRef.value = false
+			modified = { type: 'reload' }
 		}
 	}
 
-	const evaluating = ref(false)
-
 	const projects = computedAsync<TableData[][]>(
-		showProjects,
+		normalize,
 		[],
 		{ lazy: true, evaluating }
 	)
 
-	const projectsTotal = computed(() => {
-		if (refreshRef.value) {
+	const total = computed(() => {
+		if (refreshRef.value && modified.type === 'reload') {
 			return 0
 		}
-		return projects.value.flat().length
+		return lastTotal.value
 	})
 
-	function refresh() {
+	function refresh(
+		_modified: Modified = { type: 'reload' }
+	) {
 		refreshRef.value = true
+		modified = _modified
 	}
 
 	return {
+		total,
 		refresh,
 		projects,
-		evaluating,
-		projectsTotal
+		evaluating
 	}
 }

@@ -44,7 +44,7 @@ async function selectDirectory() {
 
 <template>
 	<div
-		class="bg-gray-100 cursor-pointer h-20vh flex justify-center items-center rounded"
+		class="bg-gray-100 cursor-pointer flex justify-center items-center rounded"
 		ref="dropZoneRef"
 		@click="selectDirectory">
 		<slot />

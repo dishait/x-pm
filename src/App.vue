@@ -13,26 +13,27 @@ const {
 	tabs,
 	activeKey,
 	onAdd: onTabAdd,
-	onDelete: onTabDelete
+	onDelete: onTabDelete,
+	handleAdd: handleTabAdd,
+	handleDelete: handleTabDelete
 } = useTabs()
 
 const {
 	refresh,
 	projects,
-	projectsTotal,
-	evaluating: loading
+	evaluating: loading,
+	total: projectsTotal
 } = computedProjects(tabs)
 
-watch(tabs, () => {
-	refresh()
-})
+onTabAdd(tabs => refresh({ type: 'add', tabs }))
+onTabDelete(index => refresh({ type: 'delete', index }))
 </script>
 
 <template>
 	<div class="p-10">
-		<a-space direction="vertical" size="large">
+		<a-space direction="vertical" size="large" fill>
 			<a-popover>
-				<Zone @onAdd="onTabAdd">
+				<Zone class="h-20vh w-full" @onAdd="handleTabAdd">
 					<icon-folder-add
 						:size="40"
 						class="!text-gray-400" />
@@ -56,15 +57,16 @@ watch(tabs, () => {
 				</template>
 			</a-popover>
 
-			<a-space direction="vertical" size="large">
-				<a-input-search
-					:style="{ width: '320px' }"
-					placeholder="请输入你要搜索的项目" />
+			<a-input-search
+				:style="{ width: '320px' }"
+				placeholder="请输入你要搜索的项目" />
 
+			<Transition name="slide-fade" mode="out-in">
 				<Tabs
+					v-if="tabs.length > 0"
 					:tabs="tabs"
 					v-model:active-key="activeKey"
-					@onDelete="onTabDelete">
+					@onDelete="handleTabDelete">
 					<template #default="{ index }">
 						<Suspense>
 							<Table
@@ -84,13 +86,34 @@ watch(tabs, () => {
 							<a-statistic
 								animation
 								placeholder="total"
-								@click="refresh"
+								@click="refresh()"
 								class="cursor-pointer"
+								:animation-duration="1500"
 								:value="projectsTotal" />
 						</a-tooltip>
 					</template>
 				</Tabs>
-			</a-space>
+
+				<a-empty
+					v-else
+					description="暂无项目，请手动添加 🦕 " />
+			</Transition>
 		</a-space>
 	</div>
 </template>
+
+<style>
+.slide-fade-enter-active {
+	transition: all 0.2s ease-in-out;
+}
+
+.slide-fade-leave-active {
+	transition: all 0.25s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+	transform: translateX(20px);
+	opacity: 0;
+}
+</style>

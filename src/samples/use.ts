@@ -30,11 +30,14 @@ export function useTabs() {
 	const tabs = useStorage<Tabs>('tabs', [])
 	const activeKey = useStorage<string>('activeKey', '')
 
+	const addHook = createEventHook<Tabs>()
+	const deleteHook = createEventHook<number>()
+
 	function refreshActiveKey() {
-		activeKey.value = tabs.value[tabs.value.length - 1].key
+		activeKey.value = tabs.value.at(-1)?.key ?? ''
 	}
 
-	async function onAdd(dirs: Dirs) {
+	async function handleAdd(dirs: Dirs) {
 		const news: Tabs = []
 
 		const notification = await lazyUseNotification()
@@ -64,11 +67,12 @@ export function useTabs() {
 			})
 		}
 
+		addHook.trigger(news)
 		tabs.value.push(...news)
 		refreshActiveKey()
 	}
 
-	async function onDelete(key: string | number) {
+	async function handleDelete(key: string | number) {
 		const modal = await lazyUseModal()
 		modal.info({
 			title: `真的要移除目录?`,
@@ -93,6 +97,7 @@ export function useTabs() {
 					content: '移除目录成功'
 				})
 
+				deleteHook.trigger(index)
 				refreshActiveKey()
 			}
 		})
@@ -100,8 +105,10 @@ export function useTabs() {
 
 	return {
 		tabs,
-		onAdd,
-		onDelete,
-		activeKey
+		activeKey,
+		handleAdd,
+		handleDelete,
+		onAdd: addHook.on,
+		onDelete: deleteHook.on
 	}
 }
