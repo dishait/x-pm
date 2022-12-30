@@ -8,6 +8,11 @@ import {
 	openFileManager
 } from '../samples/node-api'
 
+defineProps<{
+	data: TableData[]
+	loading: boolean
+}>()
+
 const columns: TableColumnData[] = [
 	{
 		title: '项目',
@@ -26,11 +31,6 @@ const columns: TableColumnData[] = [
 		align: 'center'
 	}
 ]
-
-defineProps<{
-	data: TableData[]
-	loading: boolean
-}>()
 
 const colors = {
 	go: 'blue',
