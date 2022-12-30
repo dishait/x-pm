@@ -28,7 +28,11 @@ export const lazyUseModal = createSharedComposable(
 
 export function useTabs() {
 	const tabs = useStorage<Tabs>('tabs', [])
-	const activeKey = useStorage('activeKey', '')
+	const activeKey = useStorage<string>('activeKey', '')
+
+	function refreshActiveKey() {
+		activeKey.value = tabs.value[tabs.value.length - 1].key
+	}
 
 	async function onAdd(dirs: Dirs) {
 		const news: Tabs = []
@@ -53,14 +57,15 @@ export function useTabs() {
 				title: dir.name
 			})
 
-			notification.warning({
+			notification.info({
 				closable: true,
 				title: `${dir.path}`,
-				content: '该目录已存在，请勿反复添加'
+				content: '添加成功'
 			})
 		}
 
 		tabs.value.push(...news)
+		refreshActiveKey()
 	}
 
 	async function onDelete(key: string | number) {
@@ -79,13 +84,16 @@ export function useTabs() {
 				const index = tabs.value.findIndex(
 					tab => tab.key === key
 				)
-				tabs.value.splice(index)
+				tabs.value.splice(index, 1)
+
 				const notification = await lazyUseNotification()
 				notification.info({
 					closable: true,
 					title: `${key}`,
 					content: '移除目录成功'
 				})
+
+				refreshActiveKey()
 			}
 		})
 	}

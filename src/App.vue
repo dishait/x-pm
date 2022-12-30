@@ -22,6 +22,10 @@ const {
 	projectsTotal,
 	evaluating: loading
 } = computedProjects(tabs)
+
+watch(tabs, () => {
+	refresh()
+})
 </script>
 
 <template>

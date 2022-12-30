@@ -48,6 +48,7 @@ const scroll = { y: 350 }
 
 <template>
 	<a-table
+		lazy-load
 		:data="data"
 		:scroll="scroll"
 		:columns="columns"
