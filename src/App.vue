@@ -2,10 +2,12 @@
 import { useTabs } from './samples/use'
 import Zone from './components/Zone.vue'
 import Tabs from './components/Tabs.vue'
-import Table from './components/Table.vue'
-import '@arco-design/web-vue/es/modal/style/css.js'
+import { defineAsyncComponent } from 'vue'
 import { computedProjects } from './samples/computed'
-import '@arco-design/web-vue/es/notification/style/css.js'
+
+const Table = defineAsyncComponent(
+	() => import('./components/Table.vue')
+)
 
 const {
 	tabs,
@@ -60,9 +62,17 @@ const {
 					v-model:active-key="activeKey"
 					@onDelete="onTabDelete">
 					<template #default="{ index }">
-						<Table
-							:loading="loading"
-							:data="projects[index] || []" />
+						<Suspense>
+							<Table
+								:loading="loading"
+								:data="projects[index] || []" />
+
+							<template #fallback>
+								<div class="flex justify-center">
+									<a-spin dot />
+								</div>
+							</template>
+						</Suspense>
 					</template>
 
 					<template #extra>

@@ -1,20 +1,46 @@
 import type { Dirs, Tabs } from '../types'
-import { Notification, Modal } from '@arco-design/web-vue'
+
+export const lazyUseNotification = createSharedComposable(
+	async () => {
+		const [{ default: Notification }] = await Promise.all([
+			import('@arco-design/web-vue/es/notification'),
+			import(
+				// @ts-ignore
+				'@arco-design/web-vue/es/notification/style/css.js'
+			)
+		])
+		return Notification
+	}
+)
+
+export const lazyUseModal = createSharedComposable(
+	async () => {
+		const [{ default: Modal }] = await Promise.all([
+			import('@arco-design/web-vue/es/modal'),
+			import(
+				// @ts-ignore
+				'@arco-design/web-vue/es/modal/style/css.js'
+			)
+		])
+		return Modal
+	}
+)
 
 export function useTabs() {
 	const tabs = useStorage<Tabs>('tabs', [])
 	const activeKey = useStorage('activeKey', '')
 
-	function onAdd(dirs: Dirs) {
+	async function onAdd(dirs: Dirs) {
 		const news: Tabs = []
 
+		const notification = await lazyUseNotification()
 		for (const dir of dirs) {
 			const exist = tabs.value.some(tab => {
 				return tab.key === dir.path
 			})
 
 			if (exist) {
-				Notification.warning({
+				notification.warning({
 					closable: true,
 					title: `${dir.path}`,
 					content: '该目录已存在，请勿反复添加'
@@ -27,18 +53,19 @@ export function useTabs() {
 				title: dir.name
 			})
 
-			Notification.success({
+			notification.warning({
 				closable: true,
 				title: `${dir.path}`,
-				content: '添加目录成功'
+				content: '该目录已存在，请勿反复添加'
 			})
 		}
 
 		tabs.value.push(...news)
 	}
 
-	function onDelete(key: string | number) {
-		Modal.info({
+	async function onDelete(key: string | number) {
+		const modal = await lazyUseModal()
+		modal.info({
 			title: `真的要移除目录?`,
 			content: `${key}`,
 			cancelText: '算了',
@@ -48,12 +75,13 @@ export function useTabs() {
 			hideCancel: false,
 			simple: false,
 			width: '400px',
-			onOk() {
+			async onOk() {
 				const index = tabs.value.findIndex(
 					tab => tab.key === key
 				)
 				tabs.value.splice(index)
-				Notification.info({
+				const notification = await lazyUseNotification()
+				notification.info({
 					closable: true,
 					title: `${key}`,
 					content: '移除目录成功'
