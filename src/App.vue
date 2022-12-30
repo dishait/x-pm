@@ -9,6 +9,7 @@ import '@arco-design/web-vue/es/notification/style/css.js'
 
 const {
 	tabs,
+	activeKey,
 	onAdd: onTabAdd,
 	onDelete: onTabDelete
 } = useTabs()
@@ -54,7 +55,10 @@ const {
 					:style="{ width: '320px' }"
 					placeholder="请输入你要搜索的项目" />
 
-				<Tabs :tabs="tabs" @onDelete="onTabDelete">
+				<Tabs
+					:tabs="tabs"
+					v-model:active-key="activeKey"
+					@onDelete="onTabDelete">
 					<template #default="{ index }">
 						<Table
 							:loading="loading"

@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import type { Tabs } from '../types'
 
-defineProps<{
+const props = defineProps<{
 	tabs: Tabs
+	activeKey: string
 }>()
 
 const emits = defineEmits<{
 	(e: 'onAdd', key: Event): void
 	(e: 'onDelete', key: string | number): void
+	(e: 'update:activeKey', key: string): void
 }>()
+
+const activeKey = useVModel(props, 'activeKey', emits)
 
 const handleAdd = (ev: Event) => {
 	emits('onAdd', ev)
@@ -24,9 +28,11 @@ const handleDelete = (
 <template>
 	<a-tabs
 		editable
+		lazy-load
 		@add="handleAdd"
+		class="penetration"
 		@delete="handleDelete"
-		class="penetration">
+		v-model:active-key="activeKey">
 		<template #extra>
 			<slot name="extra" />
 		</template>

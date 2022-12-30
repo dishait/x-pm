@@ -3,6 +3,7 @@ import { Notification, Modal } from '@arco-design/web-vue'
 
 export function useTabs() {
 	const tabs = useStorage<Tabs>('tabs', [])
+	const activeKey = useStorage('activeKey', '')
 
 	function onAdd(dirs: Dirs) {
 		const news: Tabs = []
@@ -64,6 +65,7 @@ export function useTabs() {
 	return {
 		tabs,
 		onAdd,
-		onDelete
+		onDelete,
+		activeKey
 	}
 }
