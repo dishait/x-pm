@@ -1,4 +1,5 @@
 import type { Tabs } from '../types'
+import { useThrottleFn } from '@vueuse/core'
 import type { TableData } from '@arco-design/web-vue'
 import { readdir, resolve, existsSync } from './node-api'
 import type {
@@ -158,8 +159,8 @@ export function computedProjects(tabs: RemovableRef<Tabs>) {
 
 	return {
 		total,
-		refresh,
 		projects,
-		evaluating
+		evaluating,
+		refresh: useThrottleFn(refresh, 1000, true)
 	}
 }

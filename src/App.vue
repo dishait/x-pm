@@ -1,21 +1,13 @@
 <script setup lang="ts">
+import Fuse from 'fuse.js'
 import Zone from './components/Zone.vue'
 import Tabs from './components/Tabs.vue'
-import { defineAsyncComponent } from 'vue'
-import { computedProjects } from './samples/computed'
 import {
-	useTabs,
-	useSearch,
-	lazyUseDarkIcon
-} from './samples/use'
-
-const Table = defineAsyncComponent(
-	() => import('./components/Table.vue')
-)
-
-const SwitchDarkIcon = defineAsyncComponent(() => {
-	return lazyUseDarkIcon()
-})
+	LazyTable,
+	LazySwitchDarkIcon
+} from './samples/lazy'
+import { useTabs, useSearch } from './samples/use'
+import { computedProjects } from './samples/computed'
 
 const {
 	tabs,
@@ -27,27 +19,72 @@ const {
 } = useTabs()
 
 const {
+	text: serachText,
+	reset: resetSearchText,
+	onStart: onStartSearching,
+	onClose: onCloseSearching
+} = useSearch()
+
+const searchTab = {
+	key: 'search',
+	title: 'Search'
+}
+
+const searching = computed(() => {
+	return tabs.value.some(tab => tab.key === searchTab.key)
+})
+
+const normalTabs = computed(() => {
+	return tabs.value.filter(tab => tab.key !== searchTab.key)
+})
+
+whenever(() => !searching.value, resetSearchText)
+
+const {
 	refresh,
 	projects,
 	evaluating: loading,
 	total: projectsTotal
-} = computedProjects(tabs)
+} = computedProjects(normalTabs)
 
 onTabAdd(tabs => refresh({ type: 'add', tabs }))
 onTabDelete(index => refresh({ type: 'delete', index }))
 
-const {
-	text: serachText,
-	on: onSearcing,
-	close: onCloseSearcing
-} = useSearch()
-
-onSearcing(() => {
-	console.log('onSearcing')
+onStartSearching(() => {
+	tabs.value.push(searchTab)
 })
 
-onCloseSearcing(() => {
-	console.log('closeSearcing')
+onCloseSearching(() => {
+	tabs.value = normalTabs.value
+})
+
+const fuse = computed(() => {
+	return new Fuse(projects.value.flat(), {
+		keys: ['name']
+	})
+})
+
+const currentSearchTabIndex = computed(() => {
+	return tabs.value.findIndex(
+		tab => tab.key === searchTab.key
+	)
+})
+
+const foundProjects = computed(() => {
+	return fuse.value
+		.search(serachText.value)
+		.map(p => p.item)
+})
+
+const projectsWithSearchResults = computed(() => {
+	return new Proxy(projects.value, {
+		get(target, index, receiver) {
+			if (currentSearchTabIndex.value === Number(index)) {
+				return foundProjects.value
+			}
+			return Reflect.get(target, index, receiver)
+		}
+	})
 })
 </script>
 
@@ -56,7 +93,7 @@ onCloseSearcing(() => {
 		<a-space direction="vertical" size="medium" fill>
 			<div class="flex justify-end">
 				<Suspense>
-					<SwitchDarkIcon />
+					<LazySwitchDarkIcon />
 
 					<template #fallback>
 						<div class="flex justify-center">
@@ -103,7 +140,6 @@ onCloseSearcing(() => {
 				v-model="serachText"
 				:style="{ width: '320px' }"
 				placeholder="请输入你要搜索的项目" />
-
 			<Transition name="slide-fade" mode="out-in">
 				<Tabs
 					v-if="tabs.length > 0"
@@ -112,9 +148,11 @@ onCloseSearcing(() => {
 					@onDelete="handleTabDelete">
 					<template #default="{ index }">
 						<Suspense>
-							<Table
+							<LazyTable
 								:loading="loading"
-								:data="projects[index] || []" />
+								:data="
+									projectsWithSearchResults[index] || []
+								" />
 
 							<template #fallback>
 								<div class="flex justify-center">

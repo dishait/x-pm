@@ -1,32 +1,5 @@
 import type { Dirs, Tabs } from '../types'
-
-const parallel = Promise.all.bind(Promise)
-
-export const lazyUseNotification = createSharedComposable(
-	async () => {
-		const [{ default: Notification }] = await parallel([
-			import('@arco-design/web-vue/es/notification'),
-			import(
-				// @ts-ignore
-				'@arco-design/web-vue/es/notification/style/css.js'
-			)
-		])
-		return Notification
-	}
-)
-
-export const lazyUseModal = createSharedComposable(
-	async () => {
-		const [{ default: Modal }] = await parallel([
-			import('@arco-design/web-vue/es/modal'),
-			import(
-				// @ts-ignore
-				'@arco-design/web-vue/es/modal/style/css.js'
-			)
-		])
-		return Modal
-	}
-)
+import { lazyUseNotification, lazyUseModal } from './lazy'
 
 export function useTabs() {
 	const tabs = useStorage<Tabs>('tabs', [])
@@ -71,7 +44,6 @@ export function useTabs() {
 
 		addHook.trigger(news)
 		tabs.value.push(...news)
-		refreshActiveKey()
 	}
 
 	async function handleDelete(key: string | number) {
@@ -100,15 +72,25 @@ export function useTabs() {
 				})
 
 				deleteHook.trigger(index)
-				refreshActiveKey()
 			}
 		})
 	}
+
+	watch(tabs, () => {
+		refreshActiveKey()
+	})
+
+	const currentTab = computed(() => {
+		return tabs.value.find(
+			tab => tab.key === activeKey.value
+		)
+	})
 
 	return {
 		tabs,
 		activeKey,
 		handleAdd,
+		currentTab,
 		handleDelete,
 		onAdd: addHook.on,
 		onDelete: deleteHook.on
@@ -116,13 +98,13 @@ export function useTabs() {
 }
 
 export function useSearch() {
-	const text = ref('')
+	const text = useStorage('searchText', '')
 	const evaluating = computed(() => text.value.length > 0)
-	const onHook = createEventHook<void>()
+	const startHook = createEventHook<void>()
 	const closeHook = createEventHook<void>()
 
 	whenever(evaluating, () => {
-		onHook.trigger()
+		startHook.trigger()
 	})
 
 	whenever(
@@ -132,32 +114,15 @@ export function useSearch() {
 		}
 	)
 
+	function reset() {
+		text.value = ''
+	}
+
 	return {
 		text,
+		reset,
 		evaluating,
-		on: onHook.on,
-		close: closeHook.on
+		onStart: startHook.on,
+		onClose: closeHook.on
 	}
 }
-
-export const lazyUseDarkIcon = createSharedComposable(
-	async () => {
-		const [{ isDark, SwitchIcon }] = await parallel([
-			import('vue-dark-switch'),
-			import(
-				// @ts-ignore
-				'vue-dark-switch/dist/style.css'
-			)
-		])
-
-		watchEffect(() => {
-			if (isDark.value) {
-				document.body.setAttribute('arco-theme', 'dark')
-			} else {
-				document.body.removeAttribute('arco-theme')
-			}
-		})
-
-		return SwitchIcon
-	}
-)

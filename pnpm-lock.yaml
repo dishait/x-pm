@@ -1,13 +1,14 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@arco-design/web-vue': ^2.40.1
+  '@arco-design/web-vue': ^2.41.0
   '@types/node': ^18.11.18
   '@vitejs/plugin-vue': ^4.0.0
   '@vueuse/core': ^9.9.0
   electron: ^22.0.0
   electron-builder: ^23.6.0
   execa: ^6.1.0
+  fuse.js: ^6.6.2
   modern-css-reset: ^1.4.0
   typescript: ^4.9.4
   unocss: ^0.48.0
@@ -21,13 +22,14 @@ specifiers:
   vue-dark-switch: ^0.2.0
 
 devDependencies:
-  '@arco-design/web-vue': 2.40.1_vue@3.2.45
+  '@arco-design/web-vue': 2.41.0_vue@3.2.45
   '@types/node': 18.11.18
   '@vitejs/plugin-vue': 4.0.0_vite@4.0.3+vue@3.2.45
   '@vueuse/core': 9.9.0_vue@3.2.45
   electron: 22.0.0
   electron-builder: 23.6.0
   execa: 6.1.0
+  fuse.js: 6.6.2
   modern-css-reset: 1.4.0
   typescript: 4.9.4
   unocss: 0.48.0_vite@4.0.3
@@ -75,8 +77,8 @@ packages:
       color: 3.2.1
     dev: true
 
-  /@arco-design/web-vue/2.40.1_vue@3.2.45:
-    resolution: {integrity: sha512-ebWDOYWgsR3u1vPr8FgH+U6stKNjOPZ623UoZTRLrEqcgQ7ApDDvULtuUwdv1jJtJAgofGOzEWJ3aT+04LK5Gg==}
+  /@arco-design/web-vue/2.41.0_vue@3.2.45:
+    resolution: {integrity: sha512-g3hurEQsdK1LIxYoHc3wvCMdajet1W2y8khSbtSYdjeFaa3B00aaYkworysANLUMLeAg/TEOvDbF+YupxNfuHA==}
     peerDependencies:
       vue: ^3.1.0
     dependencies:
@@ -1820,6 +1822,11 @@ packages:
 
   /function-bind/1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
+    dev: true
+
+  /fuse.js/6.6.2:
+    resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
+    engines: {node: '>=10'}
     dev: true
 
   /generic-names/2.0.1:
