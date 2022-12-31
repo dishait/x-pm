@@ -2,12 +2,20 @@
 import Zone from './components/Zone.vue'
 import Tabs from './components/Tabs.vue'
 import { defineAsyncComponent } from 'vue'
-import { useTabs, useSearch } from './samples/use'
 import { computedProjects } from './samples/computed'
+import {
+	useTabs,
+	useSearch,
+	lazyUseDarkIcon
+} from './samples/use'
 
 const Table = defineAsyncComponent(
 	() => import('./components/Table.vue')
 )
+
+const SwitchDarkIcon = defineAsyncComponent(() => {
+	return lazyUseDarkIcon()
+})
 
 const {
 	tabs,
@@ -28,17 +36,51 @@ const {
 onTabAdd(tabs => refresh({ type: 'add', tabs }))
 onTabDelete(index => refresh({ type: 'delete', index }))
 
-const { text: serachText } = useSearch()
+const {
+	text: serachText,
+	on: onSearcing,
+	close: onCloseSearcing
+} = useSearch()
+
+onSearcing(() => {
+	console.log('onSearcing')
+})
+
+onCloseSearcing(() => {
+	console.log('closeSearcing')
+})
 </script>
 
 <template>
-	<div class="p-10">
-		<a-space direction="vertical" size="large" fill>
+	<div class="p-5">
+		<a-space direction="vertical" size="medium" fill>
+			<div class="flex justify-end">
+				<Suspense>
+					<SwitchDarkIcon />
+
+					<template #fallback>
+						<div class="flex justify-center">
+							<a-spin />
+						</div>
+					</template>
+				</Suspense>
+			</div>
 			<a-popover>
-				<Zone class="h-20vh w-full" @onAdd="handleTabAdd">
-					<icon-folder-add
-						:size="40"
-						class="!text-gray-400" />
+				<Zone
+					class="h-20vh w-full flex justify-center items-center rounded"
+					@onAdd="handleTabAdd">
+					<a-space>
+						<icon-folder
+							:size="35"
+							class="!text-gray-500" />
+
+						<a-statistic
+							animation
+							class="cursor-pointer"
+							:value-style="{ color: 'rgb(107, 114, 128)' }"
+							:animation-duration="1500"
+							:value="projectsTotal" />
+					</a-space>
 				</Zone>
 
 				<template #content>
@@ -86,13 +128,13 @@ const { text: serachText } = useSearch()
 
 					<template #extra>
 						<a-tooltip content="点击刷新" mini>
-							<a-statistic
+							<!-- <a-statistic
 								animation
 								placeholder="total"
 								@click="refresh()"
 								class="cursor-pointer"
 								:animation-duration="1500"
-								:value="projectsTotal" />
+								:value="projectsTotal" /> -->
 						</a-tooltip>
 					</template>
 				</Tabs>
