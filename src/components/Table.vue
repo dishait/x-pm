@@ -17,13 +17,42 @@ const columns: TableColumnData[] = [
 	{
 		title: '项目',
 		dataIndex: 'name',
-		width: 300
+		width: 300,
+		sortable: {
+			sortDirections: ['ascend', 'descend']
+		}
 	},
 	{
 		title: '类型',
 		dataIndex: 'types',
 		align: 'center',
-		slotName: 'types'
+		slotName: 'types',
+		filterable: {
+			filters: [
+				{
+					text: 'node',
+					value: 'node'
+				},
+				{
+					text: 'deno',
+					value: 'deno'
+				},
+				{
+					text: 'go',
+					value: 'go'
+				},
+				{
+					text: 'unknown',
+					value: 'unknown'
+				}
+			],
+			filter: (values, record) => {
+				return values.some(value =>
+					record.types.includes(value)
+				)
+			},
+			multiple: true
+		}
 	},
 	{
 		title: '启动',
