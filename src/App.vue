@@ -70,9 +70,7 @@ onCloseSearcing(() => {
 					class="h-20vh w-full flex justify-center items-center rounded"
 					@onAdd="handleTabAdd">
 					<a-space>
-						<icon-folder
-							:size="35"
-							class="!text-gray-500" />
+						<icon-file :size="32" class="!text-gray-500" />
 
 						<a-statistic
 							animation
@@ -128,13 +126,11 @@ onCloseSearcing(() => {
 
 					<template #extra>
 						<a-tooltip content="点击刷新" mini>
-							<!-- <a-statistic
-								animation
-								placeholder="total"
-								@click="refresh()"
-								class="cursor-pointer"
-								:animation-duration="1500"
-								:value="projectsTotal" /> -->
+							<a-button shape="round">
+								<template #icon>
+									<icon-refresh @click="refresh()" />
+								</template>
+							</a-button>
 						</a-tooltip>
 					</template>
 				</Tabs>

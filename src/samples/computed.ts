@@ -52,27 +52,32 @@ async function showProjects(tabs: Tabs) {
 				const types: string[] = []
 				const path = resolve(root, name)
 
-				_types.forEach(t => {
-					const exists = t.files.some(file => {
-						return existsSync(resolve(path, file))
-					})
-					if (exists) {
-						types.push(t.type)
-					}
-				})
-
-				function isUnknown() {
-					return types.length === 0
-				}
-
-				if (isUnknown()) {
-					types.push('unknown')
-				}
-
 				return {
 					name,
 					path,
-					types
+					get types() {
+						if (types.length > 0) {
+							return types
+						}
+						_types.forEach(t => {
+							const exists = t.files.some(file => {
+								return existsSync(resolve(path, file))
+							})
+							if (exists) {
+								types.push(t.type)
+							}
+						})
+
+						function isUnknown() {
+							return types.length === 0
+						}
+
+						if (isUnknown()) {
+							types.push('unknown')
+						}
+
+						return types
+					}
 				}
 			})
 	})
