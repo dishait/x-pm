@@ -22,6 +22,7 @@ declare module '@vue/runtime-core' {
     ATabs: typeof import('@arco-design/web-vue')['Tabs']
     ATag: typeof import('@arco-design/web-vue')['Tag']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
+    IconAdd: typeof import('@arco-design/web-vue/es/icon')['IconAdd']
     IconArrowRise: typeof import('@arco-design/web-vue/es/icon')['IconArrowRise']
     IconDelete: typeof import('@arco-design/web-vue/es/icon')['IconDelete']
     IconDragArrow: typeof import('@arco-design/web-vue/es/icon')['IconDragArrow']

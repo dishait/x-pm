@@ -190,7 +190,10 @@ function onSearchFocus() {
 
 					<template #extra>
 						<a-space>
-							<a-tooltip content="点击刷新" mini>
+							<a-tooltip
+								mini
+								content="点击刷新"
+								background-color="#455a64">
 								<a-button shape="round">
 									<template #icon>
 										<icon-refresh @click="refresh()" />
@@ -198,11 +201,22 @@ function onSearchFocus() {
 								</a-button>
 							</a-tooltip>
 
-							<a-tooltip content="删除选中" mini>
-								<a-button
-									type="primary"
-									shape="round"
-									status="danger">
+							<a-tooltip
+								mini
+								content="新建项目"
+								background-color="#00897b">
+								<a-button shape="round" status="success">
+									<template #icon>
+										<icon-folder-add />
+									</template>
+								</a-button>
+							</a-tooltip>
+
+							<a-tooltip
+								mini
+								content="删除选中"
+								background-color="#e53935">
+								<a-button shape="round" status="danger">
 									<template #icon>
 										<icon-delete />
 									</template>
