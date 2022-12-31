@@ -64,28 +64,41 @@ const fuse = computed(() => {
 	})
 })
 
-const currentSearchTabIndex = computed(() => {
+const searchTabIndex = computed(() => {
 	return tabs.value.findIndex(
 		tab => tab.key === searchTab.key
 	)
 })
 
+const lazySerachText = useThrottle(
+	serachText,
+	1000,
+	true,
+	true
+)
+
 const foundProjects = computed(() => {
 	return fuse.value
-		.search(serachText.value)
+		.search(lazySerachText.value)
 		.map(p => p.item)
 })
 
 const projectsWithSearchResults = computed(() => {
 	return new Proxy(projects.value, {
 		get(target, index, receiver) {
-			if (currentSearchTabIndex.value === Number(index)) {
+			if (searchTabIndex.value === Number(index)) {
 				return foundProjects.value
 			}
 			return Reflect.get(target, index, receiver)
 		}
 	})
 })
+
+function onSearchFocus() {
+	if (searching.value) {
+		activeKey.value = searchTab.key
+	}
+}
 </script>
 
 <template>
@@ -138,6 +151,7 @@ const projectsWithSearchResults = computed(() => {
 
 			<a-input-search
 				v-model="serachText"
+				@focus="onSearchFocus"
 				:style="{ width: '320px' }"
 				placeholder="请输入你要搜索的项目" />
 			<Transition name="slide-fade" mode="out-in">
