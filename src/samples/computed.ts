@@ -1,5 +1,4 @@
 import type { Tabs } from '../types'
-import { useThrottleFn } from '@vueuse/core'
 import type { TableData } from '@arco-design/web-vue'
 import { readdir, resolve, existsSync } from './node-api'
 import type {

@@ -1,5 +1,3 @@
-import { defineAsyncComponent } from 'vue'
-
 const parallel = Promise.all.bind(Promise)
 
 export const lazyUseNotification = createSharedComposable(
