@@ -189,13 +189,26 @@ function onSearchFocus() {
 					</template>
 
 					<template #extra>
-						<a-tooltip content="点击刷新" mini>
-							<a-button shape="round">
-								<template #icon>
-									<icon-refresh @click="refresh()" />
-								</template>
-							</a-button>
-						</a-tooltip>
+						<a-space>
+							<a-tooltip content="点击刷新" mini>
+								<a-button shape="round">
+									<template #icon>
+										<icon-refresh @click="refresh()" />
+									</template>
+								</a-button>
+							</a-tooltip>
+
+							<a-tooltip content="删除选中" mini>
+								<a-button
+									type="primary"
+									shape="round"
+									status="danger">
+									<template #icon>
+										<icon-delete />
+									</template>
+								</a-button>
+							</a-tooltip>
+						</a-space>
 					</template>
 				</Tabs>
 

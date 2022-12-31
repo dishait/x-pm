@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type {
 	TableData,
-	TableColumnData
+	TableColumnData,
+	TableRowSelection
 } from '@arco-design/web-vue'
 import {
 	openVscode,
@@ -73,16 +74,27 @@ function showTagColor(type: 'node' | 'deno') {
 }
 
 const scroll = { y: 350 }
+
+const rowSelection = {
+	type: 'checkbox',
+	showCheckedAll: true,
+	onlyCurrent: false
+} as TableRowSelection
+
+const selectedKeys = ref([])
 </script>
 
 <template>
 	<a-table
 		lazy-load
 		:data="data"
+		row-key="name"
 		:scroll="scroll"
 		:columns="columns"
 		column-resizable
 		:loading="loading"
+		:row-selection="rowSelection"
+		v-model:selectedKeys="selectedKeys"
 		:pagination="false">
 		<template #types="{ record }">
 			<a-space>
