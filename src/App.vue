@@ -89,6 +89,18 @@ const projectsWithSearchResults = computed(() => {
 			if (searchTabIndex.value === Number(index)) {
 				return foundProjects.value
 			}
+
+			if (
+				searchTabIndex.value !== -1 &&
+				Number(index) > searchTabIndex.value
+			) {
+				return Reflect.get(
+					target,
+					Number(index) - 1,
+					receiver
+				)
+			}
+
 			return Reflect.get(target, index, receiver)
 		}
 	})
