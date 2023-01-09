@@ -127,58 +127,40 @@ function onSearchFocus() {
 					</template>
 				</Suspense>
 			</div>
-			<a-popover>
-				<Zone
-					class="h-20vh w-full flex justify-center items-center rounded"
-					@onAdd="handleTabAdd">
-					<a-space>
-						<icon-file :size="32" class="!text-gray-500" />
 
-						<a-statistic
-							animation
-							class="cursor-pointer"
-							:value-style="{ color: 'rgb(107, 114, 128)' }"
-							:animation-duration="1500"
-							:value="projectsTotal" />
+			<a-popover>
+				<Zone class="h-20vh w-full flex justify-center items-center rounded" @onAdd="handleTabAdd">
+					<a-space>
+						<icon-file :size="32" class="!text-gray-400" />
+
+						<a-statistic animation class="cursor-pointer" :value-style="{ color: 'rgb(156, 163, 175)' }"
+							:animation-duration="1500" :value="projectsTotal" />
 					</a-space>
 				</Zone>
 
 				<template #content>
 					<a-list size="small" :bordered="false">
 						<a-list-item>
-							<icon-launch
-								:size="15"
-								class="!text-gray-500" />
+							<icon-launch :size="15" class="!text-gray-500" />
 							点击选择
 						</a-list-item>
 						<a-list-item>
-							<icon-drag-arrow
-								:size="15"
-								class="!text-gray-500" />
+							<icon-drag-arrow :size="15" class="!text-gray-500" />
 							拖入目录
 						</a-list-item>
 					</a-list>
 				</template>
 			</a-popover>
 
-			<a-input-search
-				v-model="serachText"
-				@focus="onSearchFocus"
-				:style="{ width: '320px' }"
+			<a-input-search v-model="serachText" @focus="onSearchFocus" :style="{ width: '320px' }"
 				placeholder="请输入你要搜索的项目" />
 			<Transition name="slide-fade" mode="out-in">
-				<Tabs
-					v-if="tabs.length > 0"
-					:tabs="tabs"
-					v-model:active-key="activeKey"
-					@onDelete="handleTabDelete">
+				<Tabs v-if="tabs.length > 0" :tabs="tabs" v-model:active-key="activeKey" @onDelete="handleTabDelete">
 					<template #default="{ index }">
 						<Suspense>
-							<LazyTable
-								:loading="loading"
-								:data="
-									projectsWithSearchResults[index] || []
-								" />
+							<LazyTable :loading="loading" :data="
+								projectsWithSearchResults[index] || []
+							" />
 
 							<template #fallback>
 								<div class="flex justify-center">
@@ -190,10 +172,7 @@ function onSearchFocus() {
 
 					<template #extra>
 						<a-space>
-							<a-tooltip
-								mini
-								content="点击刷新"
-								background-color="#455a64">
+							<a-tooltip mini content="点击刷新" background-color="#455a64">
 								<a-button shape="round">
 									<template #icon>
 										<icon-refresh @click="refresh()" />
@@ -201,10 +180,7 @@ function onSearchFocus() {
 								</a-button>
 							</a-tooltip>
 
-							<a-tooltip
-								mini
-								content="新建项目"
-								background-color="#00897b">
+							<a-tooltip mini content="新建项目" background-color="#00897b">
 								<a-button shape="round" status="success">
 									<template #icon>
 										<icon-folder-add />
@@ -212,10 +188,7 @@ function onSearchFocus() {
 								</a-button>
 							</a-tooltip>
 
-							<a-tooltip
-								mini
-								content="删除选中"
-								background-color="#e53935">
+							<a-tooltip mini content="删除选中" background-color="#e53935">
 								<a-button shape="round" status="danger">
 									<template #icon>
 										<icon-delete />
@@ -226,9 +199,7 @@ function onSearchFocus() {
 					</template>
 				</Tabs>
 
-				<a-empty
-					v-else
-					description="暂无项目，请手动添加 🦕 " />
+				<a-empty v-else description="暂无项目，请手动添加 🦕 " />
 			</Transition>
 		</a-space>
 	</div>
