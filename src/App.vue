@@ -5,9 +5,9 @@ import Tabs from './components/Tabs.vue'
 import {
 	LazyTable,
 	LazySwitchDarkIcon
-} from './samples/lazy'
-import { useTabs, useSearch } from './samples/use'
-import { computedProjects } from './samples/computed'
+} from './composables/lazy'
+import { useTabs, useSearch } from './composables/use'
+import { computedProjects } from './composables/computed'
 
 const {
 	tabs,

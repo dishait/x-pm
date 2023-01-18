@@ -4,10 +4,7 @@ import type {
 	TableColumnData,
 	TableRowSelection
 } from '@arco-design/web-vue'
-import {
-	openVscode,
-	openFileManager
-} from '../samples/node-api'
+import { openFileManager, openVscode } from "../composables/node-api"
 
 defineProps<{
 	data: TableData[]
@@ -85,23 +82,11 @@ const selectedKeys = ref([])
 </script>
 
 <template>
-	<a-table
-		lazy-load
-		:data="data"
-		row-key="name"
-		:scroll="scroll"
-		:columns="columns"
-		column-resizable
-		:loading="loading"
-		:row-selection="rowSelection"
-		v-model:selectedKeys="selectedKeys"
-		:pagination="false">
+	<a-table lazy-load :data="data" row-key="name" :scroll="scroll" :columns="columns" column-resizable
+		:loading="loading" :row-selection="rowSelection" v-model:selectedKeys="selectedKeys" :pagination="false">
 		<template #types="{ record }">
 			<a-space>
-				<a-tag
-					v-for="type of record.types"
-					:key="type"
-					:color="showTagColor(type)">
+				<a-tag v-for="type of record.types" :key="type" :color="showTagColor(type)">
 					{{ type }}
 				</a-tag>
 			</a-space>
@@ -115,8 +100,7 @@ const selectedKeys = ref([])
 				</a-button>
 				<a-button status="warning" shape="round">
 					<template #icon>
-						<icon-folder
-							@click="openFileManager(record.path)" />
+						<icon-folder @click="openFileManager(record.path)" />
 					</template>
 				</a-button>
 			</a-space>

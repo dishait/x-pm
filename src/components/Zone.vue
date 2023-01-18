@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import type { MabyeFiles, Dirs } from '../types'
-import {
-	basename,
-	showDirectoryDialog
-} from '../samples/node-api'
 
 const emit = defineEmits<{
 	(e: 'onAdd', dirs: Dirs): void

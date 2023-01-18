@@ -32,8 +32,9 @@ export default defineConfig({
 		}),
 		Unocss(),
 		AutoImport({
-			dts: './types/auto-imports.d.ts',
+			dirs: ['src/composables'],
 			resolvers: [ArcoResolver()],
+			dts: './types/auto-imports.d.ts',
 			imports: ['vue', '@vueuse/core']
 		}),
 		Components({
