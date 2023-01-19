@@ -5,10 +5,10 @@ import 'vue-dark-switch/dist/style.css'
 </script>
 
 <template>
-	<n-config-provider :theme="naiveTheme">
-		<slot />
-		<div class="fixed top-5 right-5">
+	<NConfigProvider :theme="naiveTheme">
+		<div class="flex justify-end p-2">
 			<SwitchIcon />
 		</div>
-	</n-config-provider>
+		<slot />
+	</NConfigProvider>
 </template>

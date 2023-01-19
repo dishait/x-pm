@@ -33,7 +33,6 @@ export default defineConfig({
 		Unocss(),
 		AutoImport({
 			dirs: ['src/composables'],
-			resolvers: [NaiveUiResolver()],
 			dts: './types/auto-imports.d.ts',
 			imports: [
 				'vue',
@@ -49,6 +48,7 @@ export default defineConfig({
 			]
 		}),
 		Components({
+			resolvers: [NaiveUiResolver()],
 			dts: './types/components.d.ts'
 		}),
 		Electron([

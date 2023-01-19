@@ -2,7 +2,9 @@ lockfileVersion: 5.4
 
 specifiers:
   '@types/node': ^18.11.18
+  '@vicons/ionicons5': ^0.12.0
   '@vitejs/plugin-vue': ^4.0.0
+  '@vue/runtime-core': ^3.2.45
   '@vueuse/core': ^9.11.0
   electron: ^22.0.3
   electron-builder: ^23.6.0
@@ -23,7 +25,9 @@ specifiers:
 
 devDependencies:
   '@types/node': 18.11.18
+  '@vicons/ionicons5': 0.12.0
   '@vitejs/plugin-vue': 4.0.0_vite@4.0.4+vue@3.2.45
+  '@vue/runtime-core': 3.2.45
   '@vueuse/core': 9.11.0_vue@3.2.45
   electron: 22.0.3
   electron-builder: 23.6.0
@@ -758,6 +762,10 @@ packages:
       vite: 4.0.4_@types+node@18.11.18
     transitivePeerDependencies:
       - rollup
+    dev: true
+
+  /@vicons/ionicons5/0.12.0:
+    resolution: {integrity: sha512-Iy1EUVRpX0WWxeu1VIReR1zsZLMc4fqpt223czR+Rpnrwu7pt46nbnC2ycO7ItI/uqDLJxnbcMC7FujKs9IfFA==}
     dev: true
 
   /@vitejs/plugin-vue/4.0.0_vite@4.0.4+vue@3.2.45:
