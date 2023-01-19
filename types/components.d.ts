@@ -37,6 +37,7 @@ declare module '@vue/runtime-core' {
     IconSun: typeof import('@arco-design/web-vue/es/icon')['IconSun']
     Table: typeof import('./../src/components/Table.vue')['default']
     Tabs: typeof import('./../src/components/Tabs.vue')['default']
+    Theme: typeof import('./../src/components/theme.vue')['default']
     Zone: typeof import('./../src/components/Zone.vue')['default']
   }
 }

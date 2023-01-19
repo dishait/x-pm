@@ -9,7 +9,7 @@ import Removelog from 'vite-plugin-removelog'
 import AutoImport from 'unplugin-auto-import/vite'
 import Renderer from 'vite-plugin-electron-renderer'
 import Components from 'unplugin-vue-components/vite'
-import { ArcoResolver } from 'unplugin-vue-components/resolvers'
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
 rmSync('dist-electron', { recursive: true, force: true })
 
@@ -33,22 +33,26 @@ export default defineConfig({
 		Unocss(),
 		AutoImport({
 			dirs: ['src/composables'],
-			resolvers: [ArcoResolver()],
+			resolvers: [NaiveUiResolver()],
 			dts: './types/auto-imports.d.ts',
-			imports: ['vue', '@vueuse/core']
+			imports: [
+				'vue',
+				'@vueuse/core',
+				{
+					'naive-ui': [
+						'useDialog',
+						'useMessage',
+						'useNotification',
+						'useLoadingBar'
+					]
+				}
+			]
 		}),
 		Components({
-			dts: './types/components.d.ts',
-			resolvers: [
-				ArcoResolver({
-					resolveIcons: true,
-					sideEffect: true
-				})
-			]
+			dts: './types/components.d.ts'
 		}),
 		Electron([
 			{
-				// Main-Process entry file of the Electron App.
 				entry: 'electron/main/index.ts',
 				onstart(options) {
 					if (process.env.VSCODE_DEBUG) {
