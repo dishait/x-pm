@@ -130,7 +130,7 @@ ipcMain.handle('open-win', (_, arg) => {
 	}
 })
 
-ipcMain.handle('showDirectoryDialog', async () => {
+ipcMain.handle('openDirectory', async () => {
 	const value = await dialog.showOpenDialog({
 		properties: ['openDirectory']
 	})

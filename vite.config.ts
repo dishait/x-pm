@@ -41,13 +41,15 @@ export default defineConfig({
 					'naive-ui': [
 						'useDialog',
 						'useMessage',
+						'useLoadingBar',
 						'useNotification',
-						'useLoadingBar'
+						'createDiscreteApi'
 					]
 				}
 			]
 		}),
 		Components({
+			directoryAsNamespace: true,
 			resolvers: [NaiveUiResolver()],
 			dts: './types/components.d.ts'
 		}),
