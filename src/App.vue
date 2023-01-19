@@ -21,16 +21,24 @@ function onOpenDirectory(path: string) {
 
 <template>
 	<Theme>
-		<NSpace vertical class="p-2" size="medium">
-			<NSpace justify="space-between" align="end">
-				<NInputGroup class="w-400px">
+		<NTabs type="line" class="p-4" animated>
+			<NTabPane name="oasis" tab="Oasis">
+				Wonderwall
+			</NTabPane>
+			<NTabPane name="foo" tab="foo"> foo </NTabPane>
+
+			<template #suffix>
+				<NSpace>
+					<NTooltip trigger="hover">
+						<template #trigger>
+							<ActionDialog
+								@on-open-directory="onOpenDirectory" />
+						</template>
+						添加目录
+					</NTooltip>
 					<Search />
-					<NButton> Enter </NButton>
-				</NInputGroup>
-				<ActionDialog
-					@on-open-directory="onOpenDirectory" />
-			</NSpace>
-			<Table />
-		</NSpace>
+				</NSpace>
+			</template>
+		</NTabs>
 	</Theme>
 </template>

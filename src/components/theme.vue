@@ -6,7 +6,7 @@ import 'vue-dark-switch/dist/style.css'
 
 <template>
 	<NConfigProvider :theme="naiveTheme">
-		<div class="flex justify-end p-3 mb-5">
+		<div class="flex justify-end p-3">
 			<SwitchIcon />
 		</div>
 		<slot />
