@@ -7,25 +7,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ipcRenderer } from 'electron'
-import { isString } from 'm-type-tools'
+import { openDirectory as _openDirectory } from '../../composables/open'
 import { AlbumsOutline } from '@vicons/ionicons5'
-import { message } from '../../composables/discrete'
 
 const emits = defineEmits<{
 	(e: 'onOpenDirectory', path: string): void
 }>()
 
 async function openDirectory() {
-	const path = (await ipcRenderer.invoke(
-		'openDirectory'
-	)) as string | undefined
-
-	if (!isString(path)) {
-		message.warning('未选择文件夹')
-		return
+	const path = await _openDirectory()
+	if (path) {
+		emits('onOpenDirectory', path)
 	}
-
-	emits('onOpenDirectory', path)
 }
 </script>
