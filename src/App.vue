@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useTabs } from './composables/tabs'
 import { message } from './composables/discrete'
+import { generateRowsFromBase } from './composables/rows'
 import { openDirectory as _openDirectory } from './composables/open'
+import { RowData } from './types'
 
 const { tabs, tabPaths, currentTab, handleTabsClose } = $(
 	useTabs()
@@ -27,6 +29,14 @@ async function openDirectory() {
 }
 
 const alertEmptyVisible = $computed(() => tabs.length === 0)
+
+const tableDatas = computedAsync(async function () {
+	return (await Promise.all(
+		tabs.map(tab => {
+			return generateRowsFromBase(tab.path)
+		})
+	)) as RowData[][]
+}, [])
 </script>
 
 <template>
@@ -39,19 +49,11 @@ const alertEmptyVisible = $computed(() => tabs.length === 0)
 			v-model:value="currentTab"
 			@close="handleTabsClose">
 			<NTabPane
-				v-for="tab of tabs"
+				v-for="(tab, index) of tabs"
 				:key="tab.path"
 				:name="tab.path"
 				:tab="tab.name">
-				<Table
-					:data="[
-						{
-							name: 'demo',
-							path: `D:/Code/Demo/demo4`,
-							tags: ['deno', 'go']
-						}
-					]">
-				</Table>
+				<Table :data="tableDatas[index] ?? []"> </Table>
 			</NTabPane>
 
 			<NTabPane

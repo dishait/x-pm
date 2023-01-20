@@ -6,7 +6,7 @@
 import Open from './action/Open'
 import Tags from './action/Tags'
 import type { RowData } from '../types'
-import type { DataTableColumns } from 'naive-ui'
+import { c, DataTableColumns } from 'naive-ui'
 
 defineProps<{
 	data: Array<RowData>
@@ -16,8 +16,7 @@ const columns: DataTableColumns<RowData> = [
 	{
 		title: '项目',
 		key: 'name',
-		resizable: true,
-		align: 'center'
+		resizable: true
 	},
 	{
 		title: '类型',
