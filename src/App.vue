@@ -47,7 +47,15 @@ watchEffect(() => {
 </script>
 
 <template>
-	<Theme :total="total">
+	<Theme>
+		<template #header>
+			<Suspense>
+				<Header :total="total" />
+				<template #fallback>
+					<NSpin size="large" />
+				</template>
+			</Suspense>
+		</template>
 		<NTabs
 			type="card"
 			class="p-4"

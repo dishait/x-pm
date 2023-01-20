@@ -24,6 +24,8 @@ release
 *.sln
 *.sw?
 
+temp
+
 # lockfile
 # package-lock.json
 # pnpm-lock.yaml
