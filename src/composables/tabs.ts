@@ -6,7 +6,9 @@ export function useTabs() {
 
 	let tabPaths = $computed(() => tabs.map(tab => tab.path))
 
-	let currentTab = $ref(tabs[0]?.path ?? 'Empty')
+	let currentTab = $(
+		useStorage('currentTab', tabs[0]?.path ?? 'Empty')
+	)
 
 	function handleTabsClose(path: string | number) {
 		if (isNumber(path)) {
