@@ -1,6 +1,6 @@
-export interface IRoot {
+export interface ITab {
 	name: string
 	path: string
 }
 
-export type Roots = IRoot[]
+export type Tabs = ITab[]

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import type { Roots } from './types'
+import type { Tabs } from './types'
+import { isNumber } from 'm-type-tools'
 import { message } from './composables/discrete'
 import { openDirectory as _openDirectory } from './composables/open'
-import { isNumber } from 'm-type-tools'
 
-let roots = $(useStorage<Roots>('roots', []))
+let tabs = $(useStorage<Tabs>('tabs', []))
 
-const paths = $computed(() => roots.map(r => r.path))
+const paths = $computed(() => tabs.map(t => t.path))
 
 function handleDirectoryPath(path: string) {
 	path = slash(path)
 	if (paths.includes(path)) {
 		return message.warning(`${path} 已存在，请误重复添加！`)
 	}
-	roots.push({
+	tabs.push({
 		path,
 		name: extractName(path)
 	})
@@ -27,30 +27,25 @@ async function openDirectory() {
 	}
 }
 
-const alertEmptyVisible = $computed(
-	() => roots.length === 0
-)
+const alertEmptyVisible = $computed(() => tabs.length === 0)
 
-let currentTab = $ref(roots[0]?.path ?? 'Empty')
+let currentTab = $ref(tabs[0]?.path ?? 'Empty')
 
 function handleTabsClose(path: string | number) {
 	if (isNumber(path)) {
-		return roots.splice(path, 1)
+		return tabs.splice(path, 1)
 	}
-	roots = roots.filter(r => r.path !== path)
+	tabs = tabs.filter(t => t.path !== path)
 }
 
-watchArray(
-	$$(roots),
-	(newRoots, oldRoots, added, removed) => {
-		const backOff = Boolean(removed.length)
-		const forward = Boolean(added.length)
+watchArray($$(tabs), (newTabs, _, added, removed) => {
+	const shouldMove =
+		Boolean(added.length) || Boolean(removed.length)
 
-		if (forward || backOff) {
-			currentTab = newRoots.at(-1)?.path ?? 'Empty'
-		}
+	if (shouldMove) {
+		currentTab = newTabs.at(-1)?.path ?? 'Empty'
 	}
-)
+})
 </script>
 
 <template>
@@ -63,11 +58,11 @@ watchArray(
 			v-model:value="currentTab"
 			@close="handleTabsClose">
 			<NTabPane
-				v-for="r of roots"
-				:key="r.path"
-				:name="r.path"
-				:tab="r.name">
-				{{ r.name }}
+				v-for="tab of tabs"
+				:key="tab.path"
+				:name="tab.path"
+				:tab="tab.name">
+				{{ tab.name }}
 			</NTabPane>
 
 			<NTabPane
