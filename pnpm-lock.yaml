@@ -7,7 +7,7 @@ specifiers:
   '@vitejs/plugin-vue': ^4.0.0
   '@vitejs/plugin-vue-jsx': ^3.0.0
   '@vue/runtime-core': ^3.2.45
-  '@vueuse/core': ^9.11.0
+  '@vueuse/core': ^9.11.1
   electron: ^22.0.3
   electron-builder: ^23.6.0
   execa: ^6.1.0
@@ -27,7 +27,7 @@ specifiers:
   vite-plugin-electron-renderer: ^0.11.4
   vite-plugin-removelog: ^0.2.1
   vue: ^3.2.45
-  vue-dark-switch: ^0.2.0
+  vue-dark-switch: ^0.2.2
 
 devDependencies:
   '@types/fs-extra': 11.0.1
@@ -36,7 +36,7 @@ devDependencies:
   '@vitejs/plugin-vue': 4.0.0_vite@4.0.4+vue@3.2.45
   '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.0.4+vue@3.2.45
   '@vue/runtime-core': 3.2.45
-  '@vueuse/core': 9.11.0_vue@3.2.45
+  '@vueuse/core': 9.11.1_vue@3.2.45
   electron: 22.0.3
   electron-builder: 23.6.0
   execa: 6.1.0
@@ -49,14 +49,14 @@ devDependencies:
   pretty-bytes: 6.0.0
   typescript: 4.9.4
   unocss: 0.48.4_vite@4.0.4
-  unplugin-auto-import: 0.12.1_@vueuse+core@9.11.0
+  unplugin-auto-import: 0.12.1_@vueuse+core@9.11.1
   unplugin-vue-components: 0.22.12_vue@3.2.45
   vite: 4.0.4_@types+node@18.11.18
   vite-plugin-electron: 0.11.1
   vite-plugin-electron-renderer: 0.11.4
   vite-plugin-removelog: 0.2.1_vue@3.2.45
   vue: 3.2.45
-  vue-dark-switch: 0.2.0_vue@3.2.45
+  vue-dark-switch: 0.2.2_vue@3.2.45
 
 packages:
 
@@ -1232,24 +1232,24 @@ packages:
     resolution: {integrity: sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==}
     dev: true
 
-  /@vueuse/core/9.11.0_vue@3.2.45:
-    resolution: {integrity: sha512-7yZJ8LNOssA8ZmeSjd4F+wbFBA4csiP4TiaXgruqg1H4PAtzSkv93PPwFLvQkSnfo3Bar+e+6QoRvWjhz7l2Xg==}
+  /@vueuse/core/9.11.1_vue@3.2.45:
+    resolution: {integrity: sha512-E/cizD1w9ILkq4axYjZrXLkKaBfzloaby2n3NMjUfd6yI/jkfTVgc6iwy/Cw2e++Ld4LphGbO+3MhzizvwUslQ==}
     dependencies:
       '@types/web-bluetooth': 0.0.16
-      '@vueuse/metadata': 9.11.0
-      '@vueuse/shared': 9.11.0_vue@3.2.45
+      '@vueuse/metadata': 9.11.1
+      '@vueuse/shared': 9.11.1_vue@3.2.45
       vue-demi: 0.13.11_vue@3.2.45
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
     dev: true
 
-  /@vueuse/metadata/9.11.0:
-    resolution: {integrity: sha512-HhtG2SWkcfZBLbamHdvLn7jKOCFpw/ifXjVTd5ilFkj98WVUk/3UTQ03wF1XIkuhSO4+b45hD2lfG9/GdKCF7w==}
+  /@vueuse/metadata/9.11.1:
+    resolution: {integrity: sha512-ABjkrG+VXggNhjfGyw5e/sekxTZfXTwjrYXkkWQmQ7Biyv+Gq9UD6IDNfeGvQZEINI0Qzw6nfuO2UFCd3hlrxQ==}
     dev: true
 
-  /@vueuse/shared/9.11.0_vue@3.2.45:
-    resolution: {integrity: sha512-8lO7wD5abYxupKy2KynH1pSgP715ky6iCrWYb8aX2AuAVi9uHXj7qE1dw6BnmArSaLHci4x9iuzWPCpAzUkC/A==}
+  /@vueuse/shared/9.11.1_vue@3.2.45:
+    resolution: {integrity: sha512-UTZYGAjT96hWn4buf4wstZbeheBVNcKPQuej6qpoSkjF1atdaeCD6kqm9uGL2waHfisSgH9mq0qCRiBOk5C/2w==}
     dependencies:
       vue-demi: 0.13.11_vue@3.2.45
     transitivePeerDependencies:
@@ -3872,7 +3872,7 @@ packages:
       - vite
     dev: true
 
-  /unplugin-auto-import/0.12.1_@vueuse+core@9.11.0:
+  /unplugin-auto-import/0.12.1_@vueuse+core@9.11.1:
     resolution: {integrity: sha512-J/3ZORq5YGKG+8D5vLLOgqaHNK77izlVN07mQ752yRLqBNDbJiwPRSnUwwYqH5N6rDay1SqnJCHaUdbJ9QMI2w==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -3883,7 +3883,7 @@ packages:
     dependencies:
       '@antfu/utils': 0.7.2
       '@rollup/pluginutils': 5.0.2
-      '@vueuse/core': 9.11.0_vue@3.2.45
+      '@vueuse/core': 9.11.1_vue@3.2.45
       local-pkg: 0.4.2
       magic-string: 0.27.0
       unimport: 1.1.0
@@ -4060,8 +4060,9 @@ packages:
       vue: 3.2.45
     dev: true
 
-  /vue-dark-switch/0.2.0_vue@3.2.45:
-    resolution: {integrity: sha512-WnSMt9rUfcy62863AtPREqtI75YeVVQCrnFsiBzLRRv7rfg687Oq5ZfSp2886X19Z27aqhBnTx+f5WI41CMc2A==}
+  /vue-dark-switch/0.2.2_vue@3.2.45:
+    resolution: {integrity: sha512-dsRBzLhJlMUjFTXCipzjxhljcXGKwP00TWYhXs+lz6Rsuw1gsAsPwwAf2OhhwndvlWIbZKPoOCMNZXFGwmhCCw==}
+    engines: {node: '>=16', pnpm: '>=7.0.0'}
     peerDependencies:
       vue: '>=3.0.0'
     dependencies:
