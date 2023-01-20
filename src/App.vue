@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import type { Tabs } from './types'
-import { isNumber } from 'm-type-tools'
+import { useTabs } from './composables/tabs'
 import { message } from './composables/discrete'
 import { openDirectory as _openDirectory } from './composables/open'
 
-let tabs = $(useStorage<Tabs>('tabs', []))
-
-const paths = $computed(() => tabs.map(t => t.path))
+const { tabs, tabPaths, currentTab, handleTabsClose } = $(
+	useTabs()
+)
 
 function handleDirectoryPath(path: string) {
 	path = slash(path)
-	if (paths.includes(path)) {
+	if (tabPaths.includes(path)) {
 		return message.warning(`${path} 已存在，请误重复添加！`)
 	}
 	tabs.push({
@@ -28,24 +27,6 @@ async function openDirectory() {
 }
 
 const alertEmptyVisible = $computed(() => tabs.length === 0)
-
-let currentTab = $ref(tabs[0]?.path ?? 'Empty')
-
-function handleTabsClose(path: string | number) {
-	if (isNumber(path)) {
-		return tabs.splice(path, 1)
-	}
-	tabs = tabs.filter(t => t.path !== path)
-}
-
-watchArray($$(tabs), (newTabs, _, added, removed) => {
-	const shouldMove =
-		Boolean(added.length) || Boolean(removed.length)
-
-	if (shouldMove) {
-		currentTab = newTabs.at(-1)?.path ?? 'Empty'
-	}
-})
 </script>
 
 <template>
@@ -62,7 +43,15 @@ watchArray($$(tabs), (newTabs, _, added, removed) => {
 				:key="tab.path"
 				:name="tab.path"
 				:tab="tab.name">
-				{{ tab.name }}
+				<Table
+					:data="[
+						{
+							name: 'demo',
+							path: `D:/Code/Demo/demo4`,
+							tags: ['deno', 'go']
+						}
+					]">
+				</Table>
 			</NTabPane>
 
 			<NTabPane

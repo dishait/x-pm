@@ -5,6 +5,7 @@ import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 
 import Electron from 'vite-plugin-electron'
+import VueJsx from '@vitejs/plugin-vue-jsx'
 import Removelog from 'vite-plugin-removelog'
 import AutoImport from 'unplugin-auto-import/vite'
 import Renderer from 'vite-plugin-electron-renderer'
@@ -30,6 +31,7 @@ export default defineConfig({
 		Vue({
 			reactivityTransform: true // 开启响应式语法糖
 		}),
+		VueJsx(),
 		Unocss(),
 		AutoImport({
 			dirs: ['src/composables'],

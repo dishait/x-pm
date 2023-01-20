@@ -1,72 +1,45 @@
 <template>
-	<NDataTable
-		:columns="columns"
-		:data="data"
-		:pagination="pagination" />
+	<NDataTable :columns="columns" :data="data" />
 </template>
 
-<script lang="ts">
-import { h, defineComponent } from 'vue'
+<script lang="ts" setup>
+import Open from './action/Open'
+import Tags from './action/Tags'
+import type { RowData } from '../types'
 import type { DataTableColumns } from 'naive-ui'
-import { NButton, createDiscreteApi } from 'naive-ui'
 
-type Song = {
-	no: number
-	title: string
-	length: string
-}
+defineProps<{
+	data: Array<RowData>
+}>()
 
-const createColumns = ({
-	play
-}: {
-	play: (row: Song) => void
-}): DataTableColumns<Song> => {
-	return [
-		{
-			title: 'No',
-			key: 'no'
-		},
-		{
-			title: 'Title',
-			key: 'title'
-		},
-		{
-			title: 'Length',
-			key: 'length'
-		},
-		{
-			title: 'Action',
-			key: 'actions',
-			render(row) {
-				return h(
-					NButton,
-					{
-						strong: true,
-						tertiary: true,
-						size: 'small',
-						onClick: () => play(row)
-					},
-					{ default: () => 'Play' }
-				)
-			}
+const columns: DataTableColumns<RowData> = [
+	{
+		title: '项目',
+		key: 'name',
+		resizable: true,
+		align: 'center'
+	},
+	{
+		title: '类型',
+		key: 'tags',
+		align: 'center',
+		resizable: true,
+		render(row) {
+			return h(Tags, {
+				tags: row.tags
+			})
 		}
-	]
-}
-
-const data: Song[] = []
-
-export default defineComponent({
-	setup() {
-		const { message } = createDiscreteApi(['message'])
-		return {
-			data,
-			columns: createColumns({
-				play(row: Song) {
-					message.info(`Play ${row.title}`)
-				}
-			}),
-			pagination: false as const
+	},
+	{
+		title: '启动',
+		key: 'open',
+		align: 'center',
+		resizable: true,
+		render(row) {
+			return h(Open, {
+				path: row.path
+			})
 		}
 	}
-})
+]
 </script>
