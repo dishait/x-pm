@@ -1,6 +1,17 @@
+import type { Stats } from 'fs'
 import { RowData } from '../types'
 import { existsSync, lstatSync } from 'fs'
 import { readdir } from 'node:fs/promises'
+
+function createLstatSync(path: string) {
+	let lstat: Stats
+	return () => {
+		if (!lstat) {
+			lstat = lstatSync(path)
+		}
+		return lstat
+	}
+}
 
 const TAGS = [
 	{
@@ -44,13 +55,18 @@ export async function generateRowsFromBase(base: string) {
 	return directories.map(directory => {
 		const { name } = directory
 		const path = `${base}/${name}`
-		const { mtime, birthtime } = lstatSync(path)
+
+		const useLstat = createLstatSync(path)
 
 		return {
 			name,
 			path,
-			mtime: mtime.getTime(),
-			birthtime: birthtime.getTime(),
+			get mtime() {
+				return useLstat().mtime.getTime()
+			},
+			get birthtime() {
+				return useLstat().birthtime.getTime()
+			},
 			get tags() {
 				return generateTagsFromBase(path)
 			}
