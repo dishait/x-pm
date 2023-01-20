@@ -1,14 +1,18 @@
 <template>
-	<NDataTable :columns="columns" :data="data" />
+	<NDataTable
+		:loading="loading"
+		:columns="columns"
+		:data="data" />
 </template>
 
 <script lang="ts" setup>
 import Open from './action/Open'
 import Tags from './action/Tags'
 import type { RowData } from '../types'
-import { c, DataTableColumns } from 'naive-ui'
+import { DataTableColumns } from 'naive-ui'
 
 defineProps<{
+	loading: boolean
 	data: Array<RowData>
 }>()
 

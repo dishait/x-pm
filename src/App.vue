@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useTabs } from './composables/tabs'
 import { message } from './composables/discrete'
-import { generateRowsFromBase } from './composables/rows'
+import { useTableDatas } from './composables/table'
 import { openDirectory as _openDirectory } from './composables/open'
-import { RowData } from './types'
 
 const { tabs, tabPaths, currentTab, handleTabsClose } = $(
 	useTabs()
@@ -30,13 +29,7 @@ async function openDirectory() {
 
 const alertEmptyVisible = $computed(() => tabs.length === 0)
 
-const tableDatas = computedAsync(async function () {
-	return (await Promise.all(
-		tabs.map(tab => {
-			return generateRowsFromBase(tab.path)
-		})
-	)) as RowData[][]
-}, [])
+const { tableDatas, evaluating } = useTableDatas($$(tabs))
 </script>
 
 <template>
@@ -53,7 +46,10 @@ const tableDatas = computedAsync(async function () {
 				:key="tab.path"
 				:name="tab.path"
 				:tab="tab.name">
-				<Table :data="tableDatas[index] ?? []"> </Table>
+				<Table
+					:loading="evaluating"
+					:data="tableDatas[index] ?? []">
+				</Table>
 			</NTabPane>
 
 			<NTabPane
