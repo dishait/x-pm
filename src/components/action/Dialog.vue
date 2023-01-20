@@ -1,14 +1,19 @@
 <template>
-	<NButton secondary circle @click="openDirectory">
-		<template #icon>
-			<NIcon size="15px"><AlbumsOutline /> </NIcon>
+	<NTooltip trigger="hover">
+		<template #trigger>
+			<NButton circle secondary @click="openDirectory">
+				<template #icon>
+					<NIcon size="15px"><AlbumsOutline /> </NIcon>
+				</template>
+			</NButton>
 		</template>
-	</NButton>
+		添加目录
+	</NTooltip>
 </template>
 
 <script lang="ts" setup>
-import { openDirectory as _openDirectory } from '../../composables/open'
 import { AlbumsOutline } from '@vicons/ionicons5'
+import { openDirectory as _openDirectory } from '../../composables/open'
 
 const emits = defineEmits<{
 	(e: 'onOpenDirectory', path: string): void

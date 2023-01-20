@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ActionDialog: typeof import('./../src/components/action/Dialog.vue')['default']
+    ActionRefresh: typeof import('./../src/components/action/Refresh.vue')['default']
     AlertEmpty: typeof import('./../src/components/alert/empty.vue')['default']
     NAlert: typeof import('naive-ui')['NAlert']
     NButton: typeof import('naive-ui')['NButton']

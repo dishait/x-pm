@@ -29,7 +29,9 @@ async function openDirectory() {
 
 const alertEmptyVisible = $computed(() => tabs.length === 0)
 
-const { tableDatas, evaluating } = useTableDatas($$(tabs))
+const { tableDatas, evaluating, refresh } = useTableDatas(
+	$$(tabs)
+)
 </script>
 
 <template>
@@ -45,10 +47,11 @@ const { tableDatas, evaluating } = useTableDatas($$(tabs))
 				v-for="(tab, index) of tabs"
 				:key="tab.path"
 				:name="tab.path"
-				:tab="tab.name">
+				:tab="tab.name"
+				display-directive="show:lazy">
 				<Table
 					:loading="evaluating"
-					:data="tableDatas[index] ?? []">
+					:data="tableDatas![index] ?? []">
 				</Table>
 			</NTabPane>
 
@@ -66,13 +69,9 @@ const { tableDatas, evaluating } = useTableDatas($$(tabs))
 
 			<template #suffix>
 				<NSpace>
-					<NTooltip trigger="hover">
-						<template #trigger>
-							<ActionDialog
-								@on-open-directory="handleDirectoryPath" />
-						</template>
-						添加目录
-					</NTooltip>
+					<ActionRefresh @refresh="refresh" />
+					<ActionDialog
+						@on-open-directory="handleDirectoryPath" />
 					<Search />
 				</NSpace>
 			</template>
