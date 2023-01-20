@@ -1,5 +1,5 @@
 <template>
-	<NInput placeholder="Search">
+	<NInput placeholder="搜索">
 		<template #prefix>
 			<NIcon :component="FlashOutline" />
 		</template>

@@ -1,4 +1,4 @@
-import { existsSync } from 'fs'
+import { existsSync, lstatSync } from 'fs'
 import { RowData } from '../types'
 import { readdir } from 'node:fs/promises'
 
@@ -46,10 +46,14 @@ export async function generateRowsFromBase(base: string) {
 		const path = `${base}/${name}`
 		const tags = generateTagsFromBase(path)
 
+		const { mtime, birthtime } = lstatSync(path)
+
 		return {
 			name,
 			path,
-			tags
+			tags,
+			mtime: mtime.getTime(),
+			birthtime: birthtime.getTime()
 		}
 	})
 }

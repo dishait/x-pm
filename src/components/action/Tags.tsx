@@ -17,7 +17,11 @@ export default defineComponent({
 		return () => (
 			<NSpace justify="center">
 				{props.tags?.map(tag => {
-					return <NTag type={TYPES[tag]}>{tag}</NTag>
+					return (
+						<NTag bordered={false} type={TYPES[tag]}>
+							{tag}
+						</NTag>
+					)
 				})}
 			</NSpace>
 		)

@@ -41,8 +41,8 @@ export default defineComponent({
 				</NButton>
 				<NButton
 					circle
-					type="warning"
 					secondary
+					type="warning"
 					onClick={openFileManager}>
 					{{
 						icon: () => (
