@@ -7,7 +7,6 @@ specifiers:
   '@vitejs/plugin-vue-jsx': ^3.0.0
   '@vue/runtime-core': ^3.2.45
   '@vueuse/core': ^9.11.0
-  date-fns: ^2.29.3
   electron: ^22.0.3
   electron-builder: ^23.6.0
   execa: ^6.1.0
@@ -33,7 +32,6 @@ devDependencies:
   '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.0.4+vue@3.2.45
   '@vue/runtime-core': 3.2.45
   '@vueuse/core': 9.11.0_vue@3.2.45
-  date-fns: 2.29.3
   electron: 22.0.3
   electron-builder: 23.6.0
   execa: 6.1.0

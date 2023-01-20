@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTabs } from './composables/tabs'
-import { message } from './composables/discrete'
 import { useTableDatas } from './composables/table'
+import { message, loadingBar } from './composables/discrete'
 import { openDirectory as _openDirectory } from './composables/open'
 
 const { tabs, tabPaths, currentTab, handleTabsClose } = $(
@@ -32,10 +32,22 @@ const alertEmptyVisible = $computed(() => tabs.length === 0)
 const { tableDatas, evaluating, refresh } = useTableDatas(
 	$$(tabs)
 )
+
+const total = $computed(
+	() => tableDatas.value?.flat().length ?? 0
+)
+
+watchEffect(() => {
+	if (evaluating.value) {
+		loadingBar.start()
+	} else {
+		loadingBar.finish()
+	}
+})
 </script>
 
 <template>
-	<Theme>
+	<Theme :total="total">
 		<NTabs
 			type="card"
 			class="p-4"

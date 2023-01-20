@@ -44,16 +44,16 @@ export async function generateRowsFromBase(base: string) {
 	return directories.map(directory => {
 		const { name } = directory
 		const path = `${base}/${name}`
-		const tags = generateTagsFromBase(path)
-
 		const { mtime, birthtime } = lstatSync(path)
 
 		return {
 			name,
 			path,
-			tags,
 			mtime: mtime.getTime(),
-			birthtime: birthtime.getTime()
+			birthtime: birthtime.getTime(),
+			get tags() {
+				return generateTagsFromBase(path)
+			}
 		}
 	})
 }

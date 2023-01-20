@@ -15,13 +15,15 @@ declare module '@vue/runtime-core' {
     NDataTable: typeof import('naive-ui')['NDataTable']
     NIcon: typeof import('naive-ui')['NIcon']
     NInput: typeof import('naive-ui')['NInput']
+    NNumberAnimation: typeof import('naive-ui')['NNumberAnimation']
     NSpace: typeof import('naive-ui')['NSpace']
+    NStatistic: typeof import('naive-ui')['NStatistic']
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
     NTooltip: typeof import('naive-ui')['NTooltip']
     Search: typeof import('./../src/components/Search.vue')['default']
     Table: typeof import('./../src/components/Table.vue')['default']
     Tabs: typeof import('./../src/components/Tabs.vue')['default']
-    Theme: typeof import('./../src/components/theme.vue')['default']
+    Theme: typeof import('./../src/components/Theme.vue')['default']
   }
 }

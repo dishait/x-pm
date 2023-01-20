@@ -1,31 +1,38 @@
 <template>
 	<NDataTable
+		:data="data"
 		:loading="loading"
 		:columns="columns"
-		:max-height="550"
-		:data="data" />
+		:max-height="550" />
 </template>
 
 <script lang="ts" setup>
 import Open from './action/Open'
 import Tags from './action/Tags'
-import FormatDistance from './action/FormatDistance'
+import Time from './action/Time'
+import Title from './action/Title'
 import type { RowData } from '../types'
 import { DataTableColumns } from 'naive-ui'
 
-defineProps<{
+const props = defineProps<{
 	loading: boolean
 	data: Array<RowData>
 }>()
 
+const counter = $computed(() => props.data.length)
+
 const columns: DataTableColumns<RowData> = [
 	{
-		title: '项目',
+		title() {
+			return h(Title, {
+				tip: '项目',
+				counter: counter
+			})
+		},
 		key: 'name',
 		resizable: true,
 		sorter: 'default'
 	},
-
 	{
 		title: '类型',
 		key: 'tags',
@@ -75,7 +82,7 @@ const columns: DataTableColumns<RowData> = [
 		sorter: 'default',
 		defaultSortOrder: 'descend',
 		render(row) {
-			return h(FormatDistance, {
+			return h(Time, {
 				time: row.mtime
 			})
 		}
@@ -87,7 +94,7 @@ const columns: DataTableColumns<RowData> = [
 		resizable: true,
 		sorter: 'default',
 		render(row) {
-			return h(FormatDistance, {
+			return h(Time, {
 				time: row.birthtime
 			})
 		}
