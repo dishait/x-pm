@@ -1,14 +1,13 @@
 import {
 	app,
-	BrowserWindow,
 	shell,
 	ipcMain,
-	ipcRenderer,
-	dialog
+	dialog,
+	screen,
+	BrowserWindow
 } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 
 // The built directory structure
 //
@@ -57,6 +56,8 @@ async function createWindow() {
 	win = new BrowserWindow({
 		title: 'Main window',
 		useContentSize: true,
+		width: screen.getPrimaryDisplay().workAreaSize.width,
+		height: screen.getPrimaryDisplay().workAreaSize.height,
 		icon: join(process.env.PUBLIC, 'favicon.ico'),
 		webPreferences: {
 			preload,
