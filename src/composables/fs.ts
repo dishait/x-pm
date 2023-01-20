@@ -1,31 +1,30 @@
 import { RowData } from '../types'
 import { CACHE_PATH } from './constant'
-import { existsSync, lstatSync } from 'node:fs'
 import { readdir, lstat } from 'node:fs/promises'
-import { createFsComputedSync } from 'file-computed'
+import { createFsComputed } from 'file-computed'
 
-const fsComputedSync = createFsComputedSync({
+async function exists(path: string) {
+	try {
+		const stat = await lstat(path)
+		return Boolean(stat)
+	} catch (error) {
+		return false
+	}
+}
+
+export const fsComputed = createFsComputed({
 	cachePath: CACHE_PATH
 })
 
-export function createUseFsInfo(path: string) {
-	let info: Pick<RowData, 'mtime' | 'birthtime' | 'tags'>
-
-	return function useFsInfo() {
-		if (info) {
-			return info
+export function createFsInfoFromPath(path: string) {
+	return fsComputed(path, async () => {
+		const { mtime, birthtime } = await lstat(path)
+		return {
+			mtime: mtime.getTime(),
+			birthtime: birthtime.getTime(),
+			tags: await generateTagsFromBase(path)
 		}
-		info = fsComputedSync(path, () => {
-			const { mtime, birthtime } = lstatSync(path)
-			return {
-				mtime: mtime.getTime(),
-				birthtime: birthtime.getTime(),
-				tags: generateTagsFromBase(path)
-			}
-		})
-
-		return info
-	}
+	})
 }
 
 const TAGS = [
@@ -43,12 +42,23 @@ const TAGS = [
 	}
 ] as const
 
-function generateTagsFromBase(
-	base: string
-): RowData['tags'] {
-	const tags = TAGS.filter(t => {
-		return t.files.some(f => existsSync(`${base}/${f}`))
-	}).map(t => t.tag)
+async function generateTagsFromBase(base: string) {
+	const nullableTags = await Promise.all(
+		TAGS.map(async TAG => {
+			const possibleExists = await Promise.all(
+				TAG.files.map(async file => {
+					return exists(`${base}/${file}`)
+				})
+			)
+			if (possibleExists.includes(true)) {
+				return TAG.tag
+			}
+			return null
+		})
+	)
+	const tags = nullableTags.filter(
+		Boolean
+	) as RowData['tags']
 
 	const unknownTag = tags.length === 0
 	if (unknownTag) {
@@ -69,7 +79,7 @@ export async function getDirectoriesFromBase(base: string) {
 }
 
 export async function shallowGetFolderSize(base: string) {
-	if (!existsSync(base)) {
+	if (!(await exists(base))) {
 		return 0
 	}
 

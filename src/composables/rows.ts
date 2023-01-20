@@ -1,29 +1,24 @@
 import {
-	createUseFsInfo,
+	createFsInfoFromPath,
 	getDirectoriesFromBase
 } from './fs'
 
 export async function generateRowsFromBase(base: string) {
 	const directories = await getDirectoriesFromBase(base)
+	return Promise.all(
+		directories.map(async directory => {
+			const { name } = directory
+			const path = `${base}/${name}`
 
-	return directories.map(directory => {
-		const { name } = directory
-		const path = `${base}/${name}`
-
-		const useFsInfo = createUseFsInfo(path)
-
-		return {
-			name,
-			path,
-			get tags() {
-				return useFsInfo().tags
-			},
-			get mtime() {
-				return useFsInfo().mtime
-			},
-			get birthtime() {
-				return useFsInfo().birthtime
+			const { tags, mtime, birthtime } =
+				await createFsInfoFromPath(path)
+			return {
+				name,
+				path,
+				tags,
+				mtime,
+				birthtime
 			}
-		}
-	})
+		})
+	)
 }

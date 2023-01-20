@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import prettyBytes from 'pretty-bytes'
-import { createFsComputed } from 'file-computed'
 import { CACHE_PATH } from '../composables/constant'
 import { shallowGetFolderSize } from '../composables/fs'
 import {
@@ -12,17 +11,8 @@ defineProps<{
 	total: number
 }>()
 
-const fsComputed = createFsComputed({
-	cachePath: CACHE_PATH
-})
-
-const bytes = await fsComputed(
-	CACHE_PATH,
-	async function () {
-		return prettyBytes(
-			await shallowGetFolderSize(CACHE_PATH)
-		)
-	}
+const bytes = prettyBytes(
+	await shallowGetFolderSize(CACHE_PATH)
 )
 </script>
 
