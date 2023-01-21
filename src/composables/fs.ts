@@ -80,24 +80,26 @@ export async function getDirectories(base: string) {
 	})
 }
 
-export async function shallowGetFolderSize(base: string) {
-	if (!(await exists(base))) {
-		return 0
-	}
+export function shallowGetFolderSize(base: string) {
+	return fsComputed(base, async () => {
+		if (!(await exists(base))) {
+			return 0
+		}
 
-	const dirents = await readdir(base, {
-		withFileTypes: true
-	})
-
-	const sizes = await Promise.all(
-		dirents.map(async dirent => {
-			const path = `${slash(base)}/${dirent.name}`
-			const { size } = await lstat(path)
-			return size
+		const dirents = await readdir(base, {
+			withFileTypes: true
 		})
-	)
 
-	return sizes.reduce((totalSize, size) => {
-		return (totalSize += size)
-	}, 0)
+		const sizes = await Promise.all(
+			dirents.map(async dirent => {
+				const path = `${slash(base)}/${dirent.name}`
+				const { size } = await lstat(path)
+				return size
+			})
+		)
+
+		return sizes.reduce((totalSize, size) => {
+			return (totalSize += size)
+		}, 0)
+	})
 }
