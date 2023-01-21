@@ -12,7 +12,7 @@
 	],
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {
-		"vite.config.ts": ".gitignore,README.md,tsconfig.*,LICENSE,package.json,electron-builder.*,index.html"
+		"vite.config.ts": ".gitignore,README.md,tsconfig.*,LICENSE,package.json,electron-builder.*,index.html,.npmrc"
 	},
 	"editor.quickSuggestions": {
 		"strings": "on"
