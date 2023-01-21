@@ -4,6 +4,12 @@
 
 <br />
 
+## 动机
+
+为了高效地管理本地项目
+
+<br />
+
 ## License
 
 Made with [markthree](https://github.com/markthree)
