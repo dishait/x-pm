@@ -80,26 +80,68 @@ export async function getDirectories(base: string) {
 	})
 }
 
-export function shallowGetFolderSize(base: string) {
+export function getFolderSize(
+	base: string,
+	depth = Infinity
+) {
+	function totalSizes(...sizes: number[]) {
+		return sizes.reduce((totalSize, size) => {
+			return (totalSize += size)
+		}, 0)
+	}
+
 	return fsComputed(base, async () => {
 		if (!(await exists(base))) {
 			return 0
 		}
 
-		const dirents = await readdir(base, {
-			withFileTypes: true
-		})
-
-		const sizes = await Promise.all(
-			dirents.map(async dirent => {
-				const path = `${slash(base)}/${dirent.name}`
-				const { size } = await lstat(path)
-				return size
+		async function deepCalc(
+			base: string,
+			depth = 1
+		): Promise<number> {
+			// 层级用尽
+			if (depth === 0) {
+				return 0
+			}
+			const dirents = await readdir(base, {
+				withFileTypes: true
 			})
-		)
+			// 空目录
+			if (dirents.length === 0) {
+				return 0
+			}
 
-		return sizes.reduce((totalSize, size) => {
-			return (totalSize += size)
-		}, 0)
+			const files = dirents.filter(dirent =>
+				dirent.isFile()
+			)
+			const sizes = await Promise.all(
+				files.map(async file => {
+					const path = `${slash(base)}/${file.name}`
+					const { size } = await lstat(path)
+					return size
+				})
+			)
+
+			const directorys = dirents.filter(dirent =>
+				dirent.isDirectory()
+			)
+
+			// 无新目录
+			if (directorys.length === 0) {
+				return totalSizes(...sizes)
+			}
+
+			const nestedTotals = await Promise.all(
+				directorys.map(directory => {
+					const newDepth = depth - 1
+					const path = `${slash(base)}/${directory.name}`
+					return deepCalc(path, newDepth)
+				})
+			)
+
+			return totalSizes(...nestedTotals, ...sizes)
+		}
+
+		return deepCalc(base, depth)
 	})
 }

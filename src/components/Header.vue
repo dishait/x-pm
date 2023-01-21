@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import prettyBytes from 'pretty-bytes'
 import { CACHE_PATH } from '../composables/constant'
-import { shallowGetFolderSize } from '../composables/fs'
+import { getFolderSize } from '../composables/fs'
 import {
 	FileTrayOutline,
 	ExtensionPuzzleOutline
@@ -11,9 +11,7 @@ defineProps<{
 	total: number
 }>()
 
-const bytes = prettyBytes(
-	await shallowGetFolderSize(CACHE_PATH)
-)
+const bytes = prettyBytes(await getFolderSize(CACHE_PATH))
 </script>
 
 <template>

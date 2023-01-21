@@ -11,8 +11,11 @@ import Open from './action/Open'
 import Tags from './action/Tags'
 import Time from './action/Time'
 import Title from './action/Title'
+import prettyBytes from 'pretty-bytes'
+import { isNumber } from 'm-type-tools'
 import type { RowData } from '../types'
 import { DataTableColumns } from 'naive-ui'
+import { LoadingTextVNode } from './action/Loading'
 
 const props = defineProps<{
 	loading: boolean
@@ -60,7 +63,7 @@ const columns: DataTableColumns<RowData> = [
 		render(row) {
 			const tags = unref(row.tags)
 			if (!tags) {
-				return h('div', 'loading')
+				return LoadingTextVNode
 			}
 			return h(Tags, {
 				tags
@@ -79,6 +82,21 @@ const columns: DataTableColumns<RowData> = [
 		}
 	},
 	{
+		title: '大小',
+		key: 'size',
+		align: 'center',
+		resizable: true,
+		sorter: 'default',
+		render(row) {
+			row.io()
+			const size = unref(row.size)
+			if (!isNumber(size)) {
+				return LoadingTextVNode
+			}
+			return h('div', prettyBytes(size))
+		}
+	},
+	{
 		title: '更新时间',
 		key: 'mtime',
 		align: 'center',
@@ -87,8 +105,8 @@ const columns: DataTableColumns<RowData> = [
 		defaultSortOrder: 'descend',
 		render(row) {
 			const time = unref(row.mtime)
-			if (!time) {
-				return h('div', 'loading')
+			if (!isNumber(time)) {
+				return LoadingTextVNode
 			}
 			return h(Time, {
 				time
@@ -103,8 +121,8 @@ const columns: DataTableColumns<RowData> = [
 		sorter: 'default',
 		render(row) {
 			const time = unref(row.birthtime)
-			if (!time) {
-				return h('div', 'loading')
+			if (!isNumber(time)) {
+				return LoadingTextVNode
 			}
 			return h(Time, {
 				time

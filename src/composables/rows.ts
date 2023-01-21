@@ -11,25 +11,41 @@ export async function generateRowsFromBase(base: string) {
 		const { name } = directory
 		const path = `${base}/${name}`
 
+		const size = ref<number>()
 		const mtime = ref<number>()
 		const birthtime = ref<number>()
 		const tags = ref<RowData['tags']>()
 
-		getLstatTimes(path)
-			.then(fc => fc)
-			.then(times => {
-				mtime.value = times.mtime
-				birthtime.value = times.birthtime
-			})
+		let readed = false
+		function io() {
+			if (readed) {
+				return
+			}
+			readed = true
+			getLstatTimes(path)
+				.then(fc => fc)
+				.then(times => {
+					mtime.value = times.mtime
+					birthtime.value = times.birthtime
+				})
 
-		generateTags(path)
-			.then(fc => fc)
-			.then(_tags => {
-				tags.value = _tags
-			})
+			generateTags(path)
+				.then(fc => fc)
+				.then(_tags => {
+					tags.value = _tags
+				})
+
+			getFolderSize(path)
+				.then(fc => fc)
+				.then(_size => {
+					size.value = _size
+				})
+		}
 
 		return {
+			io,
 			name,
+			size,
 			path,
 			tags,
 			mtime,
