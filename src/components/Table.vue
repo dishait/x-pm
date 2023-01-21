@@ -58,8 +58,12 @@ const columns: DataTableColumns<RowData> = [
 			}
 		],
 		render(row) {
+			const tags = unref(row.tags)
+			if (!tags) {
+				return h('div', 'loading')
+			}
 			return h(Tags, {
-				tags: row.tags
+				tags
 			})
 		}
 	},
@@ -82,8 +86,12 @@ const columns: DataTableColumns<RowData> = [
 		sorter: 'default',
 		defaultSortOrder: 'descend',
 		render(row) {
+			const time = unref(row.mtime)
+			if (!time) {
+				return h('div', 'loading')
+			}
 			return h(Time, {
-				time: row.mtime
+				time
 			})
 		}
 	},
@@ -94,8 +102,12 @@ const columns: DataTableColumns<RowData> = [
 		resizable: true,
 		sorter: 'default',
 		render(row) {
+			const time = unref(row.birthtime)
+			if (!time) {
+				return h('div', 'loading')
+			}
 			return h(Time, {
-				time: row.birthtime
+				time
 			})
 		}
 	}

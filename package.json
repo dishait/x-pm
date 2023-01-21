@@ -36,7 +36,6 @@
     "build": "vite build && electron-builder"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.1",
     "@types/node": "^18.11.18",
     "@vicons/ionicons5": "^0.12.0",
     "@vitejs/plugin-vue": "^4.0.0",
@@ -46,8 +45,7 @@
     "electron": "^22.0.3",
     "electron-builder": "^23.6.0",
     "execa": "^6.1.0",
-    "file-computed": "^0.3.4",
-    "fs-extra": "^11.1.0",
+    "file-computed": "^0.3.8",
     "fuse.js": "^6.6.2",
     "m-type-tools": "^0.4.0",
     "modern-css-reset": "^1.4.0",

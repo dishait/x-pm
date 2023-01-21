@@ -1,8 +1,6 @@
 import type { Ref } from 'vue'
 import { Tabs, RowData } from './../types'
 
-const parallel = Promise.all.bind(Promise)
-
 export function useTableDatas(tabs: Ref<Tabs>) {
 	const evaluating = ref(false)
 
@@ -23,7 +21,7 @@ export function useTableDatas(tabs: Ref<Tabs>) {
 		}
 
 		if (mode === 'add') {
-			oldTableDatas = await parallel(
+			oldTableDatas = await Promise.all(
 				tabs.value.map((tab, index) => {
 					const oldRows = oldTableDatas[index]
 					if (oldRows) {
@@ -57,7 +55,7 @@ export function useTableDatas(tabs: Ref<Tabs>) {
 		}
 
 		if (mode === 'refresh') {
-			oldTableDatas = await parallel(
+			oldTableDatas = await Promise.all(
 				tabs.value.map(tab => {
 					return generateRowsFromBase(tab.path)
 				})

@@ -29,16 +29,16 @@ async function openDirectory() {
 
 const alertEmptyVisible = $computed(() => tabs.length === 0)
 
-const { tableDatas, evaluating, refresh } = useTableDatas(
-	$$(tabs)
+const { tableDatas, evaluating, refresh } = $(
+	useTableDatas($$(tabs))
 )
 
 const total = $computed(
-	() => tableDatas.value?.flat().length ?? 0
+	() => tableDatas?.flat().length ?? 0
 )
 
 watchEffect(() => {
-	if (evaluating.value) {
+	if (evaluating && !alertEmptyVisible) {
 		loadingBar.start()
 	} else {
 		loadingBar.finish()

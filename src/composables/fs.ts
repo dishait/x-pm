@@ -16,13 +16,12 @@ export const fsComputed = createFsComputed({
 	cachePath: CACHE_PATH
 })
 
-export function createFsInfoFromPath(path: string) {
+export function getLstatTimes(path: string) {
 	return fsComputed(path, async () => {
 		const { mtime, birthtime } = await lstat(path)
 		return {
 			mtime: mtime.getTime(),
-			birthtime: birthtime.getTime(),
-			tags: await generateTagsFromBase(path)
+			birthtime: birthtime.getTime()
 		}
 	})
 }
@@ -42,33 +41,36 @@ const TAGS = [
 	}
 ] as const
 
-async function generateTagsFromBase(base: string) {
-	const nullableTags = await Promise.all(
-		TAGS.map(async TAG => {
-			const possibleExists = await Promise.all(
-				TAG.files.map(async file => {
-					return exists(`${base}/${file}`)
-				})
-			)
-			if (possibleExists.includes(true)) {
-				return TAG.tag
-			}
-			return null
-		})
-	)
-	const tags = nullableTags.filter(
-		Boolean
-	) as RowData['tags']
+export function generateTags(base: string) {
+	return fsComputed(base, async () => {
+		const nullableTags = await Promise.all(
+			TAGS.map(async TAG => {
+				const possibleExists = await Promise.all(
+					TAG.files.map(async file => {
+						return exists(`${base}/${file}`)
+					})
+				)
+				if (possibleExists.includes(true)) {
+					return TAG.tag
+				}
+				return null
+			})
+		)
+		let tags = nullableTags.filter(
+			Boolean
+		) as RowData['tags']
 
-	const unknownTag = tags.length === 0
-	if (unknownTag) {
-		return ['unknown']
-	}
+		const unrefTags = unref(tags!)
+		const unknownTag = unrefTags.length === 0
+		if (unknownTag) {
+			unrefTags.push('unknown')
+		}
 
-	return tags
+		return unrefTags
+	})
 }
 
-export async function getDirectoriesFromBase(base: string) {
+export async function getDirectories(base: string) {
 	const dirents = await readdir(base, {
 		withFileTypes: true
 	})
