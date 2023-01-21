@@ -20,6 +20,7 @@ import { LoadingTextVNode } from './action/Loading'
 const props = defineProps<{
 	loading: boolean
 	data: Array<RowData>
+	closeMtimeSort?: boolean
 }>()
 
 const counter = $computed(() => props.data.length)
@@ -102,7 +103,9 @@ const columns: DataTableColumns<RowData> = [
 		align: 'center',
 		resizable: true,
 		sorter: 'default',
-		defaultSortOrder: 'descend',
+		defaultSortOrder: props.closeMtimeSort
+			? false
+			: 'descend',
 		render(row) {
 			const time = unref(row.mtime)
 			if (!isNumber(time)) {

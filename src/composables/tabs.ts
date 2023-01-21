@@ -7,7 +7,7 @@ export function useTabs() {
 	let tabPaths = $computed(() => tabs.map(tab => tab.path))
 
 	let currentTab = $(
-		useStorage('currentTab', tabs[0]?.path ?? 'Empty')
+		useStorage('currentTab', tabs.at(0)?.path ?? 'Empty')
 	)
 
 	function handleTabsClose(path: string | number) {
@@ -17,14 +17,23 @@ export function useTabs() {
 		tabs = tabs.filter(t => t.path !== path)
 	}
 
-	watchArray($$(tabs), (newTabs, _, added, removed) => {
-		const shouldMove =
-			Boolean(added.length) || Boolean(removed.length)
+	watchArray(
+		$$(tabs),
+		(newTabs, _, added, removed) => {
+			if (currentTab === 'Search') {
+				return
+			}
+			const shouldMove =
+				Boolean(added.length) || Boolean(removed.length)
 
-		if (shouldMove) {
-			currentTab = newTabs.at(-1)?.path ?? 'Empty'
+			if (shouldMove) {
+				currentTab = newTabs.at(-1)?.path ?? 'Empty'
+			}
+		},
+		{
+			flush: 'post'
 		}
-	})
+	)
 
 	return $$({
 		tabs,

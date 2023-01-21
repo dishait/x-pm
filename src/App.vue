@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useTabs } from './composables/tabs'
+import { useSearch } from './composables/search'
 import { useTableDatas } from './composables/table'
 import { message, loadingBar } from './composables/discrete'
 import { openDirectory as _openDirectory } from './composables/open'
 
-const { tabs, tabPaths, currentTab, handleTabsClose } = $(
-	useTabs()
-)
+let {
+	tabs,
+	tabPaths,
+	currentTab,
+	handleTabsClose: _handleTabsClose
+} = $(useTabs())
 
 function handleDirectoryPath(path: string) {
 	path = slash(path)
@@ -44,10 +48,43 @@ watchEffect(() => {
 		loadingBar.finish()
 	}
 })
+
+const totalTableDatas = $computed(
+	() => tableDatas?.flat() ?? []
+)
+
+let {
+	ing: searching,
+	value: searchValue,
+	result: searchResult
+} = $(useSearch($$(totalTableDatas)))
+
+let lastTab: string
+watch($$(searching), ing => {
+	if (ing) {
+		lastTab = currentTab
+		currentTab = 'Search'
+	} else {
+		if (!lastTab || lastTab === 'Search') {
+			currentTab = tabs.at(-1)?.path ?? 'Empty'
+		} else {
+			currentTab = lastTab
+		}
+	}
+})
+
+function handleTabsClose(path: string | number) {
+	if (path === 'Search') {
+		return (searchValue = '')
+	}
+	_handleTabsClose(path)
+}
 </script>
 
 <template>
 	<Theme>
+		<Search v-model:value="searchValue" />
+
 		<template #header>
 			<Suspense>
 				<Header :total="total" />
@@ -87,12 +124,19 @@ watchEffect(() => {
 					@click="openDirectory" />
 			</NTabPane>
 
+			<NTabPane name="Search" tab="Search" v-if="searching">
+				<Table
+					close-mtime-sort
+					:loading="evaluating"
+					:data="searchResult">
+				</Table>
+			</NTabPane>
+
 			<template #suffix>
 				<NSpace>
 					<ActionRefresh @refresh="refresh" />
 					<ActionDialog
 						@on-open-directory="handleDirectoryPath" />
-					<Search />
 				</NSpace>
 			</template>
 		</NTabs>
