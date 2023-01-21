@@ -1,6 +1,6 @@
-# project-manager
+# x-pm
 
-项目管理器
+通用项目管理器
 
 <br />
 

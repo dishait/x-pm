@@ -1,8 +1,8 @@
 {
-  "name": "project-manager",
+  "name": "x-pm",
   "version": "0.0.1",
   "main": "dist-electron/main/index.js",
-  "description": "项目管理器",
+  "description": "通用项目管理器",
   "author": {
     "name": "markthree",
     "email": "1801982702@qq.com",
@@ -16,11 +16,11 @@
   "private": true,
   "keywords": [
     "electron",
-    "rollup",
     "vite",
     "vue3",
     "vue",
-    "project"
+    "pm",
+    "naive-ui"
   ],
   "debug": {
     "env": {
