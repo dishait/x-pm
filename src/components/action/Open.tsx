@@ -15,13 +15,13 @@ export default defineComponent({
 			required: true
 		}
 	},
-	setup({ path }) {
+	setup(props) {
 		function openFileManager() {
-			_openFileManager(path)
+			_openFileManager(props.path)
 		}
 
 		function openVscode() {
-			_openVscode(path)
+			_openVscode(props.path)
 		}
 
 		return () => (
