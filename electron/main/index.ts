@@ -1,9 +1,9 @@
 import {
 	app,
 	shell,
-	ipcMain,
 	dialog,
 	screen,
+	ipcMain,
 	BrowserWindow
 } from 'electron'
 import { release } from 'node:os'
@@ -57,8 +57,9 @@ const indexHtml = join(process.env.DIST, 'index.html')
 
 async function createWindow() {
 	win = new BrowserWindow({
-		title: 'Main window',
-		useContentSize: true,
+		frame: true,
+		title: 'x-pm',
+		autoHideMenuBar: true,
 		width: screen.getPrimaryDisplay().workAreaSize.width,
 		height: screen.getPrimaryDisplay().workAreaSize.height,
 		icon: join(process.env.PUBLIC, 'favicon.ico'),
