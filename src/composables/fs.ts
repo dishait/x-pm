@@ -1,4 +1,5 @@
 import { RowData } from '../types'
+import type { Dirent } from 'node:fs'
 import { CACHE_PATH } from './constant'
 import { readdir, lstat } from 'node:fs/promises'
 import { createFsComputed } from 'file-computed'
@@ -84,10 +85,11 @@ export function getFolderSize(
 	base: string,
 	depth = Infinity
 ) {
-	function totalSizes(...sizes: number[]) {
-		return sizes.reduce((totalSize, size) => {
-			return (totalSize += size)
-		}, 0)
+	function totalSizes(sizes: number[]) {
+		return sizes.reduce(
+			(totalSize, size) => (totalSize += size),
+			0
+		)
 	}
 
 	return fsComputed(base, async () => {
@@ -111,35 +113,34 @@ export function getFolderSize(
 				return 0
 			}
 
-			const files = dirents.filter(dirent =>
-				dirent.isFile()
-			)
-			const sizes = await Promise.all(
-				files.map(async file => {
-					const path = `${slash(base)}/${file.name}`
-					const { size } = await lstat(path)
-					return size
-				})
-			)
+			const files: Dirent[] = []
+			const directorys: Dirent[] = []
 
-			const directorys = dirents.filter(dirent =>
-				dirent.isDirectory()
-			)
-
-			// 无新目录
-			if (directorys.length === 0) {
-				return totalSizes(...sizes)
+			for (const dirent of dirents) {
+				if (dirent.isFile()) {
+					files.push(dirent)
+					continue
+				}
+				if (dirent.isDirectory()) {
+					directorys.push(dirent)
+				}
 			}
 
-			const nestedTotals = await Promise.all(
-				directorys.map(directory => {
-					const newDepth = depth - 1
-					const path = `${slash(base)}/${directory.name}`
-					return deepCalc(path, newDepth)
-				})
+			const sizes = await Promise.all(
+				[
+					files.map(async file => {
+						const path = `${slash(base)}/${file.name}`
+						const { size } = await lstat(path)
+						return size
+					}),
+					directorys.map(directory => {
+						const path = `${slash(base)}/${directory.name}`
+						return deepCalc(path, depth - 1)
+					})
+				].flat()
 			)
 
-			return totalSizes(...nestedTotals, ...sizes)
+			return totalSizes(sizes)
 		}
 
 		return deepCalc(base, depth)
