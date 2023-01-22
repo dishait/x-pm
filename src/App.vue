@@ -142,3 +142,34 @@ function handleTabsClose(path: string | number) {
 		</NTabs>
 	</Theme>
 </template>
+
+<style>
+/*
+* 全局滚动条
+*/
+::-webkit-scrollbar-track {
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+	width: 7px;
+	background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: #bfbfbf;
+}
+
+/*
+* 全局滚动条(暗黑模式)
+*/
+html.dark ::-webkit-scrollbar,
+html.dark ::-webkit-scrollbar-track {
+	background-color: #212529;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+	background-color: #464649;
+}
+</style>
