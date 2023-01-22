@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Refresh } from '@vicons/ionicons5'
+import { FlashOutline } from '@vicons/ionicons5'
 
 const emits = defineEmits<{
 	(e: 'refresh'): void
@@ -16,7 +16,7 @@ function refresh() {
 			<NButton secondary circle @click="refresh">
 				<template #icon>
 					<NIcon size="15px">
-						<Refresh />
+						<FlashOutline />
 					</NIcon>
 				</template>
 			</NButton>
