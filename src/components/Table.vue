@@ -35,7 +35,10 @@ const columns: DataTableColumns<RowData> = [
 		},
 		key: 'name',
 		resizable: true,
-		sorter: 'default'
+		sorter: 'default',
+		ellipsis: {
+			tooltip: true
+		}
 	},
 	{
 		title: '类型',
