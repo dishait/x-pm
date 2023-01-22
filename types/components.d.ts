@@ -9,7 +9,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ActionDialog: typeof import('./../src/components/action/Dialog.vue')['default']
     ActionRefresh: typeof import('./../src/components/action/Refresh.vue')['default']
-    AlertEmpty: typeof import('./../src/components/alert/Empty.vue')['default']
+    AlertEmpty: typeof import('./../src/components/alert/empty.vue')['default']
     Header: typeof import('./../src/components/Header.vue')['default']
     NAlert: typeof import('naive-ui')['NAlert']
     NButton: typeof import('naive-ui')['NButton']
@@ -26,6 +26,6 @@ declare module '@vue/runtime-core' {
     NTooltip: typeof import('naive-ui')['NTooltip']
     Search: typeof import('./../src/components/Search.vue')['default']
     Table: typeof import('./../src/components/Table.vue')['default']
-    Theme: typeof import('./../src/components/Theme.vue')['default']
+    Theme: typeof import('./../src/components/theme.vue')['default']
   }
 }

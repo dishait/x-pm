@@ -9,6 +9,9 @@ import {
 import { release } from 'node:os'
 import { join } from 'node:path'
 
+// 禁用 GPU 加速，electron bug
+app.disableHardwareAcceleration()
+
 // The built directory structure
 //
 // ├─┬ dist-electron
