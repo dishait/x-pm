@@ -7,11 +7,19 @@ export function useSearch(data: ComputedRef<RowData[]>) {
 
 	let ing = $computed(() => value.length > 0)
 
+	let storeIndex = $computed(() => {
+		return Fuse.createIndex(['name'], data.value)
+	})
+
 	let store = $computed(() => {
-		return new Fuse(data.value, {
-			shouldSort: true,
-			keys: ['name']
-		})
+		return new Fuse(
+			data.value,
+			{
+				shouldSort: true,
+				keys: ['name']
+			},
+			storeIndex
+		)
 	})
 
 	let result = $computed(() =>
@@ -22,6 +30,7 @@ export function useSearch(data: ComputedRef<RowData[]>) {
 		ing,
 		value,
 		store,
-		result
+		result,
+		storeIndex
 	})
 }
