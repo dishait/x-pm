@@ -1,3 +1,5 @@
+import mem from 'mem'
+import type { PropType } from 'vue'
 import { NTag, NSpace } from 'naive-ui'
 
 const TYPES = {
@@ -11,9 +13,14 @@ interface IProps {
 	tags: Array<keyof typeof TYPES>
 }
 
-export default defineComponent({
-	props: ['tags'],
-	setup(props: IProps) {
+const Tags = defineComponent({
+	props: {
+		tags: Array as PropType<IProps['tags']>,
+		default() {
+			return []
+		}
+	},
+	setup(props) {
 		return () => (
 			<NSpace justify="center">
 				{props.tags?.map(tag => {
@@ -27,3 +34,11 @@ export default defineComponent({
 		)
 	}
 })
+
+export default Tags
+
+export const createMemTags = mem((tags: IProps['tags']) =>
+	h(Tags, {
+		tags
+	})
+)

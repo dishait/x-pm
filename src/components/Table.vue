@@ -8,13 +8,13 @@
 
 <script lang="ts" setup>
 import Open from './action/Open'
-import Tags from './action/Tags'
 import Time from './action/Time'
 import Title from './action/Title'
 import prettyBytes from 'pretty-bytes'
 import { isNumber } from 'm-type-tools'
 import type { RowData } from '../types'
 import { DataTableColumns } from 'naive-ui'
+import { createMemTags } from './action/Tags'
 import { LoadingTextVNode } from './action/Loading'
 
 const props = defineProps<{
@@ -69,9 +69,7 @@ const columns: DataTableColumns<RowData> = [
 			if (!tags) {
 				return LoadingTextVNode
 			}
-			return h(Tags, {
-				tags
-			})
+			return createMemTags(tags)
 		}
 	},
 	{
