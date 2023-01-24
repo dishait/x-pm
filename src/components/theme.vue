@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { NConfigProvider, zhCN, dateZhCN } from 'naive-ui'
-import { naiveTheme, SwitchIcon } from 'vue-dark-switch'
-import 'vue-dark-switch/dist/style.css'
+import { naiveTheme } from 'vue-dark-switch'
+
+const SwitchIcon = defineAsyncComponent(async () => {
+	import('vue-dark-switch/dist/style.css')
+	return (await import('vue-dark-switch')).SwitchIcon
+})
 </script>
 
 <template>

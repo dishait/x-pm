@@ -5,6 +5,18 @@ import { useTableDatas } from './composables/table'
 import { message, loadingBar } from './composables/discrete'
 import { openDirectory as _openDirectory } from './composables/open'
 
+const Search = defineAsyncComponent(
+	() => import('./components/Search.vue')
+)
+
+const AlertEmpty = defineAsyncComponent(
+	() => import('./components/alert/empty.vue')
+)
+
+const Table = defineAsyncComponent(
+	() => import('./components/Table.vue')
+)
+
 let {
 	tabs,
 	tabPaths,
@@ -84,7 +96,6 @@ function handleTabsClose(path: string | number) {
 <template>
 	<Theme>
 		<Search v-model:value="searchValue" />
-
 		<template #header>
 			<Suspense>
 				<Header :total="total" />
@@ -93,6 +104,7 @@ function handleTabsClose(path: string | number) {
 				</template>
 			</Suspense>
 		</template>
+
 		<NTabs
 			type="card"
 			class="p-4"
@@ -106,10 +118,17 @@ function handleTabsClose(path: string | number) {
 				:name="tab.path"
 				:tab="tab.name"
 				display-directive="show:lazy">
-				<Table
-					:loading="evaluating"
-					:data="tableDatas![index] ?? []">
-				</Table>
+				<Suspense>
+					<Table
+						:loading="evaluating"
+						:data="tableDatas![index] ?? []">
+					</Table>
+					<template #fallback>
+						<NSpace justify="center">
+							<NSpin size="large" />
+						</NSpace>
+					</template>
+				</Suspense>
 			</NTabPane>
 
 			<NTabPane
@@ -125,11 +144,18 @@ function handleTabsClose(path: string | number) {
 			</NTabPane>
 
 			<NTabPane name="Search" tab="Search" v-if="searching">
-				<Table
-					close-mtime-sort
-					:loading="evaluating"
-					:data="searchResult">
-				</Table>
+				<Suspense>
+					<Table
+						close-mtime-sort
+						:loading="evaluating"
+						:data="searchResult">
+					</Table>
+					<template #fallback>
+						<NSpace justify="center">
+							<NSpin size="large" />
+						</NSpace>
+					</template>
+				</Suspense>
 			</NTabPane>
 
 			<template #suffix>
