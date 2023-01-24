@@ -52,7 +52,7 @@
     "modern-css-reset": "^1.4.0",
     "naive-ui": "^2.34.3",
     "pretty-bytes": "^6.0.0",
-    "rimraf": "^4.1.1",
+    "rimraf": "^4.1.2",
     "typescript": "^4.9.4",
     "unocss": "^0.48.4",
     "unplugin-auto-import": "^0.12.1",
@@ -63,5 +63,10 @@
     "vite-plugin-removelog": "^0.2.1",
     "vue": "^3.2.45",
     "vue-dark-switch": "^0.2.2"
+  },
+  "resolutions": {
+    "asar": "npm:@electron/asar",
+    "electron-osx-sign": "npm:@electron/osx-sign",
+    "sourcemap-codec": "npm:@jridgewell/sourcemap-codec"
   }
 }
