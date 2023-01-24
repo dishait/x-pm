@@ -1,6 +1,6 @@
 {
   "name": "x-pm",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "dist-electron/main/index.js",
   "description": "通用项目管理器",
   "author": {
