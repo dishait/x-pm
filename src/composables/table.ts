@@ -2,9 +2,9 @@ import type { Ref } from 'vue'
 import { Tabs, RowData } from './../types'
 
 export function useTableDatas(tabs: Ref<Tabs>) {
+	const isRefresh = ref(true)
 	const evaluating = ref(false)
 
-	const isRefresh = ref(true)
 
 	let oldTabPaths: string[] = []
 	let oldTableDatas: RowData[][] = []

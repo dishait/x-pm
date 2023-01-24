@@ -72,77 +72,75 @@ export function generateTags(base: string) {
 }
 
 export async function getDirectories(base: string) {
+	return fsComputed(base, async () => {
+		const dirents = await readdir(base, {
+			withFileTypes: true
+		})
+	
+		return dirents.filter(dirent => {
+			return dirent.isDirectory()
+		})
+	})
+}
+
+function zipSizes(sizes: number[]) {
+	return sizes.reduce((total, size) => (total += size), 0)
+}
+
+async function _getFolderSize(
+	base: string,
+	depth = 1
+): Promise<number> {
+	// 层级用尽
+	if (depth === 0) {
+		return 0
+	}
 	const dirents = await readdir(base, {
 		withFileTypes: true
 	})
+	// 空目录
+	if (dirents.length === 0) {
+		return 0
+	}
 
-	return dirents.filter(dirent => {
-		return dirent.isDirectory()
-	})
+	const files: Dirent[] = []
+	const directorys: Dirent[] = []
+
+	for (const dirent of dirents) {
+		if (dirent.isFile()) {
+			files.push(dirent)
+			continue
+		}
+		if (dirent.isDirectory()) {
+			directorys.push(dirent)
+		}
+	}
+
+	const sizes = await Promise.all(
+		[
+			files.map(async file => {
+				const path = `${slash(base)}/${file.name}`
+				const { size } = await lstat(path)
+				return size
+			}),
+			directorys.map(directory => {
+				const path = `${slash(base)}/${directory.name}`
+				return _getFolderSize(path, depth - 1)
+			})
+		].flat()
+	)
+
+	return zipSizes(sizes)
 }
 
 export function getFolderSize(
 	base: string,
 	depth = Infinity
 ) {
-	function totalSizes(sizes: number[]) {
-		return sizes.reduce(
-			(totalSize, size) => (totalSize += size),
-			0
-		)
-	}
-
 	return fsComputed(base, async () => {
 		if (!(await exists(base))) {
 			return 0
 		}
-
-		async function deepCalc(
-			base: string,
-			depth = 1
-		): Promise<number> {
-			// 层级用尽
-			if (depth === 0) {
-				return 0
-			}
-			const dirents = await readdir(base, {
-				withFileTypes: true
-			})
-			// 空目录
-			if (dirents.length === 0) {
-				return 0
-			}
-
-			const files: Dirent[] = []
-			const directorys: Dirent[] = []
-
-			for (const dirent of dirents) {
-				if (dirent.isFile()) {
-					files.push(dirent)
-					continue
-				}
-				if (dirent.isDirectory()) {
-					directorys.push(dirent)
-				}
-			}
-
-			const sizes = await Promise.all(
-				[
-					files.map(async file => {
-						const path = `${slash(base)}/${file.name}`
-						const { size } = await lstat(path)
-						return size
-					}),
-					directorys.map(directory => {
-						const path = `${slash(base)}/${directory.name}`
-						return deepCalc(path, depth - 1)
-					})
-				].flat()
-			)
-
-			return totalSizes(sizes)
-		}
-
-		return deepCalc(base, depth)
+		return _getFolderSize(base, depth)
 	})
 }

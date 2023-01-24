@@ -45,7 +45,7 @@
     "electron": "^22.0.3",
     "electron-builder": "^23.6.0",
     "execa": "^6.1.0",
-    "file-computed": "^0.3.8",
+    "file-computed": "^0.3.10",
     "fuse.js": "^6.6.2",
     "m-type-tools": "^0.4.0",
     "modern-css-reset": "^1.4.0",

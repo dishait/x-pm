@@ -23,20 +23,17 @@ export async function generateRowsFromBase(base: string) {
 			}
 			readed = true
 			getLstatTimes(path)
-				.then(fc => fc)
 				.then(times => {
 					mtime.value = times.mtime
 					birthtime.value = times.birthtime
 				})
 
 			generateTags(path)
-				.then(fc => fc)
 				.then(_tags => {
 					tags.value = _tags
 				})
 
 			getFolderSize(path)
-				.then(fc => fc)
 				.then(_size => {
 					size.value = _size
 				})

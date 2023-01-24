@@ -10,7 +10,7 @@ specifiers:
   electron: ^22.0.3
   electron-builder: ^23.6.0
   execa: ^6.1.0
-  file-computed: ^0.3.8
+  file-computed: ^0.3.10
   fuse.js: ^6.6.2
   m-type-tools: ^0.4.0
   modern-css-reset: ^1.4.0
@@ -38,7 +38,7 @@ devDependencies:
   electron: 22.0.3
   electron-builder: 23.6.0
   execa: 6.1.0
-  file-computed: 0.3.8
+  file-computed: 0.3.10
   fuse.js: 6.6.2
   m-type-tools: 0.4.0
   modern-css-reset: 1.4.0
@@ -2172,8 +2172,8 @@ packages:
       pend: 1.2.0
     dev: true
 
-  /file-computed/0.3.8:
-    resolution: {integrity: sha512-kmgdbWjjdGybPJoOgPJO7K7pFV6HcUFjIZuof7TdahvMgewbsBDJoPdWkSC2X5KBGKWbNDe4KFxj+CgpsLZfsA==}
+  /file-computed/0.3.10:
+    resolution: {integrity: sha512-jfIIyAZK2M2ZbDLss6wt80mFyE4UeVh+vIYPZFNVY9UBfviNsMKqD9SnL67lsROfzbt2opT+3kveO35ntxSxww==}
     dependencies:
       destr: 1.2.2
       m-type-tools: 0.4.0
