@@ -10,7 +10,7 @@
   },
   "bugs": {
     "email": "1801982702@qq.com",
-    "url": "https://github.com/dishait/project-manager/issues"
+    "url": "https://github.com/dishait/x-pm/issues"
   },
   "license": "MIT",
   "private": true,
@@ -33,6 +33,7 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
+    "release": "bumpp --commit --push --tag",
     "build": "rimraf release && vite build && electron-builder"
   },
   "devDependencies": {
