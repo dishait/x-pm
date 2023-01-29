@@ -3,6 +3,10 @@ import Unocss from 'unocss/vite'
 import pkg from './package.json'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
+import { resolve } from 'node:path'
+import { outputFile } from 'fs-extra'
+import { createFsComputed } from 'file-computed'
+import { inferVersion } from 'go-get-folder-size'
 
 import Electron from 'vite-plugin-electron'
 import VueJsx from '@vitejs/plugin-vue-jsx'
@@ -11,8 +15,35 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Renderer from 'vite-plugin-electron-renderer'
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import { readFile } from 'node:fs/promises'
 
-rmSync('dist-electron', { recursive: true, force: true })
+const fsComputed = createFsComputed()
+
+fsComputed(
+	[
+		'bin',
+		'package.json',
+		'pnpm-lock.yaml',
+		'vite.config.ts'
+	],
+	async function () {
+		rmSync('dist-electron', {
+			recursive: true,
+			force: true
+		})
+
+		const version = inferVersion()
+		const name = `go-get-folder-size${
+			version.startsWith('windows') ? '.exe' : ''
+		}`
+		const bin = resolve(
+			`node_modules/go-get-folder-size/dist`,
+			`go-get-folder-size_${version}/${name}`
+		)
+
+		await outputFile(`bin/${name}`, await readFile(bin))
+	}
+)
 
 const isDevelopment =
 	process.env.NODE_ENV === 'development' ||

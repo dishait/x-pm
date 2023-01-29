@@ -26,6 +26,8 @@ release
 
 temp
 
+bin
+
 # lockfile
 # package-lock.json
 # pnpm-lock.yaml
