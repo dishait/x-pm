@@ -67,7 +67,7 @@
     "vite-plugin-electron-renderer": "^0.11.4",
     "vite-plugin-removelog": "^0.2.1",
     "vue": "^3.2.45",
-    "vue-dark-switch": "^0.2.2"
+    "vue-dark-switch": "^0.3.0"
   },
   "resolutions": {
     "asar": "npm:@electron/asar",
