@@ -1,7 +1,7 @@
 import { RowData } from '../types'
-import { createFsComputed } from 'file-computed'
 import { readdir, lstat } from 'node:fs/promises'
 import { getFolderSizeBin } from 'go-get-folder-size'
+import { createFsComputedWithStream } from 'file-computed'
 import { detectGoGetFolderSizeBin as _detectGoGetFolderSizeBin } from './detect'
 
 import {
@@ -18,7 +18,7 @@ async function exists(path: string) {
 	}
 }
 
-export const fsComputed = createFsComputed({
+export const fsComputed = createFsComputedWithStream({
 	cachePath: CACHE_PATH
 })
 

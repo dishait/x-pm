@@ -5,8 +5,8 @@ import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import { resolve } from 'node:path'
 import { outputFile } from 'fs-extra'
-import { createFsComputed } from 'file-computed'
 import { inferVersion } from 'go-get-folder-size'
+import { createFsComputedWithStream } from 'file-computed'
 
 import Electron from 'vite-plugin-electron'
 import VueJsx from '@vitejs/plugin-vue-jsx'
@@ -17,7 +17,7 @@ import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import { readFile } from 'node:fs/promises'
 
-const fsComputed = createFsComputed()
+const fsComputed = createFsComputedWithStream()
 
 fsComputed(
 	[
