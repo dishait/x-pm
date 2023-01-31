@@ -108,7 +108,10 @@ export function getFolderSize(base: string) {
 	})
 }
 
-export function getFolderSizeForce(base: string) {
+export async function getFolderSizeForce(base: string) {
+	if (!(await exists(base))) {
+		return 0
+	}
 	return getFolderSizeBin(base, true, {
 		binPath: detectGoGetFolderSizeBin()
 	})
