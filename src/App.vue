@@ -102,7 +102,10 @@ function handleTabsClose(path: string | number) {
 			<Suspense>
 				<Header :total="total" />
 				<template #fallback>
-					<NSpin size="large" />
+					<div
+						class="h-62px w-200px flex flex justify-center items-center">
+						<NSpin size="large" />
+					</div>
 				</template>
 			</Suspense>
 		</template>
