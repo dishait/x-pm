@@ -107,3 +107,9 @@ export function getFolderSize(base: string) {
 		})
 	})
 }
+
+export function getFolderSizeForce(base: string) {
+	return getFolderSizeBin(base, true, {
+		binPath: detectGoGetFolderSizeBin()
+	})
+}

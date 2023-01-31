@@ -39,6 +39,7 @@ declare global {
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getDirectories: typeof import('../src/composables/fs')['getDirectories']
   const getFolderSize: typeof import('../src/composables/fs')['getFolderSize']
+  const getFolderSizeForce: typeof import('../src/composables/fs')['getFolderSizeForce']
   const getLstatTimes: typeof import('../src/composables/fs')['getLstatTimes']
   const h: typeof import('vue')['h']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
