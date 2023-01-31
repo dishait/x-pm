@@ -155,6 +155,7 @@ declare global {
   const useDevicePixelRatio: typeof import('@vueuse/core')['useDevicePixelRatio']
   const useDevicesList: typeof import('@vueuse/core')['useDevicesList']
   const useDialog: typeof import('naive-ui')['useDialog']
+  const useDiscreteApi: typeof import('../src/composables/discrete')['useDiscreteApi']
   const useDisplayMedia: typeof import('@vueuse/core')['useDisplayMedia']
   const useDocumentVisibility: typeof import('@vueuse/core')['useDocumentVisibility']
   const useDraggable: typeof import('@vueuse/core')['useDraggable']

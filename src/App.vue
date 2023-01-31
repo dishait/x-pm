@@ -24,16 +24,18 @@ let {
 	handleTabsClose: _handleTabsClose
 } = $(useTabs())
 
-function handleDirectoryPath(path: string) {
+async function handleDirectoryPath(path: string) {
 	path = slash(path)
 	if (tabPaths.includes(path)) {
-		return message.warning(`${path} 已存在，请误重复添加！`)
+		return message?.warning(
+			`${path} 已存在，请误重复添加！`
+		)
 	}
 	tabs.push({
 		path,
 		name: extractName(path)
 	})
-	message.info(`${path} 添加成功！`)
+	message?.info(`${path} 添加成功！`)
 }
 
 async function openDirectory() {
@@ -55,9 +57,9 @@ const total = $computed(
 
 watchEffect(() => {
 	if (evaluating && !alertEmptyVisible) {
-		loadingBar.start()
+		loadingBar?.start()
 	} else {
-		loadingBar.finish()
+		loadingBar?.finish()
 	}
 })
 
