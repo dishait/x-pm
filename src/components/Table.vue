@@ -3,6 +3,7 @@
 		:data="data"
 		:loading="loading"
 		:columns="columns"
+		:min-height="550"
 		:max-height="550" />
 </template>
 
