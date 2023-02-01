@@ -129,7 +129,10 @@ function handleTabsClose(path: string | number) {
 						:data="tableDatas![index] ?? []">
 					</Table>
 					<template #fallback>
-						<NSpace justify="center">
+						<NSpace
+							justify="center"
+							align="center"
+							class="h-550px">
 							<NSpin size="large" />
 						</NSpace>
 					</template>
