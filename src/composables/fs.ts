@@ -1,7 +1,7 @@
 import { RowData } from '../types'
 import { readdir, lstat } from 'node:fs/promises'
-import { getFolderSizeBin } from 'go-get-folder-size'
 import { createFsComputedWithStream } from 'file-computed'
+import { getFolderSizeBin } from 'go-get-folder-size/npm/bin'
 import { detectGoGetFolderSizeBin as _detectGoGetFolderSizeBin } from './detect'
 
 import {

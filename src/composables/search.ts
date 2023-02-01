@@ -1,6 +1,6 @@
-import type { ComputedRef } from 'vue'
 import Fuse from 'fuse.js'
 import { RowData } from '../types'
+import type { ComputedRef } from 'vue'
 
 export function useSearch(data: ComputedRef<RowData[]>) {
 	let value = $(useStorage('Search', ''))

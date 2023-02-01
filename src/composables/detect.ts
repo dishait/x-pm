@@ -1,6 +1,6 @@
 import mem from 'mem'
 import { resolve } from 'node:path'
-import { inferVersion } from 'go-get-folder-size'
+import { inferVersion } from 'go-get-folder-size/npm/bin'
 
 export const detectGoGetFolderSizeName = mem(function (
 	version: string = inferVersion()
