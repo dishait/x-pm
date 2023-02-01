@@ -151,7 +151,11 @@ function handleTabsClose(path: string | number) {
 					@click="openDirectory" />
 			</NTabPane>
 
-			<NTabPane name="Search" tab="Search" v-if="searching">
+			<NTabPane
+				name="Search"
+				tab="Search"
+				v-if="searching"
+				display-directive="show:lazy">
 				<Suspense>
 					<Table
 						close-mtime-sort
@@ -159,7 +163,10 @@ function handleTabsClose(path: string | number) {
 						:data="searchResult">
 					</Table>
 					<template #fallback>
-						<NSpace justify="center">
+						<NSpace
+							justify="center"
+							align="center"
+							class="h-550px">
 							<NSpin size="large" />
 						</NSpace>
 					</template>
