@@ -10,12 +10,13 @@ import { createFsComputedWithStream } from 'file-computed'
 
 import Electron from 'vite-plugin-electron'
 import VueJsx from '@vitejs/plugin-vue-jsx'
+import { readFile } from 'node:fs/promises'
 import Removelog from 'vite-plugin-removelog'
 import AutoImport from 'unplugin-auto-import/vite'
+import { HtmlPolyfill } from 'vue-dark-switch/vite'
 import Renderer from 'vite-plugin-electron-renderer'
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
-import { readFile } from 'node:fs/promises'
 
 const fsComputed = createFsComputedWithStream()
 
@@ -54,10 +55,8 @@ export default defineConfig({
 	define: {
 		__VUE_OPTIONS_API__: false // 明确不使用 options api
 	},
-	optimizeDeps: {
-		include: ['@arco-design/web-vue']
-	},
 	plugins: [
+		HtmlPolyfill(),
 		Removelog(),
 		Vue({
 			reactivityTransform: true // 开启响应式语法糖

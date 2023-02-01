@@ -36,7 +36,7 @@ specifiers:
   vite-plugin-electron-renderer: ^0.11.4
   vite-plugin-removelog: ^0.2.1
   vue: ^3.2.45
-  vue-dark-switch: ^0.3.0
+  vue-dark-switch: ^0.4.3
 
 devDependencies:
   '@types/fs-extra': 11.0.1
@@ -69,7 +69,7 @@ devDependencies:
   vite-plugin-electron-renderer: 0.11.4
   vite-plugin-removelog: 0.2.1_vue@3.2.45
   vue: 3.2.45
-  vue-dark-switch: 0.3.0_vue@3.2.45
+  vue-dark-switch: 0.4.3_vite@4.0.4+vue@3.2.45
 
 packages:
 
@@ -4466,12 +4466,14 @@ packages:
       vue: 3.2.45
     dev: true
 
-  /vue-dark-switch/0.3.0_vue@3.2.45:
-    resolution: {integrity: sha512-WOehkTHK4JvdNnvK/AuElsRViG+bzWWIiA3BlPWa8SLs5rfPQT9OiC8zgQCEP2R/6yh5xd6ZE88hSg7VUwyCrQ==}
+  /vue-dark-switch/0.4.3_vite@4.0.4+vue@3.2.45:
+    resolution: {integrity: sha512-rh/RNZTWGKnhdCUNs9hWgOciNqja2ms3llzP4+9DbPhLc5S1mC49zNr+mDWvLNiNFXxCt9u1ONVNURXO2dwYtg==}
     engines: {node: '>=16', pnpm: '>=7.0.0'}
     peerDependencies:
+      vite: '>=4.0.0'
       vue: '>=3.0.0'
     dependencies:
+      vite: 4.0.4_@types+node@18.11.18
       vue: 3.2.45
     dev: true
 
