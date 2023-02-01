@@ -14,7 +14,7 @@ export async function generateRowsFromBase(base: string) {
 		const size = ref<number>()
 		const mtime = ref<number>()
 		const birthtime = ref<number>()
-		const tags = ref<RowData['tags']>()
+		const tags = shallowRef<RowData['tags']>()
 
 		let readed = false
 		function io() {
@@ -22,21 +22,18 @@ export async function generateRowsFromBase(base: string) {
 				return
 			}
 			readed = true
-			getLstatTimes(path)
-				.then(times => {
-					mtime.value = times.mtime
-					birthtime.value = times.birthtime
-				})
+			getLstatTimes(path).then(times => {
+				mtime.value = times.mtime
+				birthtime.value = times.birthtime
+			})
 
-			generateTags(path)
-				.then(_tags => {
-					tags.value = _tags
-				})
+			generateTags(path).then(_tags => {
+				tags.value = _tags
+			})
 
-			getFolderSize(path)
-				.then(_size => {
-					size.value = _size
-				})
+			getFolderSize(path).then(_size => {
+				size.value = _size
+			})
 		}
 
 		return {
