@@ -1,58 +1,54 @@
-import { isDark } from 'vue-dark-switch'
-import { UnPromiseReturnType } from 'm-type-tools'
+import { isDark } from "vue-dark-switch";
+import { UnPromiseReturnType } from "m-type-tools";
 
 export async function useDiscreteApi() {
-	const [
-		{ createDiscreteApi },
-		{ messageDark, messageLight },
-		{ loadingBarDark, loadingBarLight }
-	] = await Promise.all([
-		import('naive-ui/es/discrete'),
-		import('naive-ui/es/message/styles'),
-		import('naive-ui/es/loading-bar/styles')
-	])
+  const [
+    { createDiscreteApi },
+    { messageDark, messageLight },
+    { loadingBarDark, loadingBarLight },
+  ] = await Promise.all([
+    import("naive-ui/es/discrete"),
+    import("naive-ui/es/message/styles"),
+    import("naive-ui/es/loading-bar/styles"),
+  ]);
 
-	const messageProviderProps = computed(() => {
-		const themeOverrides = isDark.value
-			? messageDark
-			: messageLight
+  const messageProviderProps = computed(() => {
+    const themeOverrides = isDark.value ? messageDark : messageLight;
 
-		return {
-			themeOverrides
-		}
-	})
+    return {
+      themeOverrides,
+    };
+  });
 
-	const loadingBarProviderProps = computed(() => {
-		const themeOverrides = isDark.value
-			? loadingBarDark
-			: loadingBarLight
+  const loadingBarProviderProps = computed(() => {
+    const themeOverrides = isDark.value ? loadingBarDark : loadingBarLight;
 
-		return {
-			themeOverrides
-		}
-	})
+    return {
+      themeOverrides,
+    };
+  });
 
-	const { message, loadingBar } = createDiscreteApi(
-		['message', 'loadingBar'],
-		{
-			messageProviderProps,
-			loadingBarProviderProps
-		}
-	)
-	return {
-		message,
-		loadingBar
-	}
+  const { message, loadingBar } = createDiscreteApi(
+    ["message", "loadingBar"],
+    {
+      messageProviderProps,
+      loadingBarProviderProps,
+    },
+  );
+  return {
+    message,
+    loadingBar,
+  };
 }
 
 export let message: UnPromiseReturnType<
-	typeof useDiscreteApi
->['message']
+  typeof useDiscreteApi
+>["message"];
 export let loadingBar: UnPromiseReturnType<
-	typeof useDiscreteApi
->['loadingBar']
+  typeof useDiscreteApi
+>["loadingBar"];
 
-useDiscreteApi().then(api => {
-	message = api.message
-	loadingBar = api.loadingBar
-})
+useDiscreteApi().then((api) => {
+  message = api.message;
+  loadingBar = api.loadingBar;
+});

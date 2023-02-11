@@ -102,71 +102,37 @@ function handleTabsClose(path: string | number) {
 			<Suspense>
 				<Header :total="total" />
 				<template #fallback>
-					<div
-						class="h-62px w-200px flex flex justify-center items-center">
+					<div class="h-62px w-200px flex flex justify-center items-center">
 						<NSpin size="large" />
 					</div>
 				</template>
 			</Suspense>
 		</template>
 
-		<NTabs
-			type="card"
-			class="p-4"
-			animated
-			closable
-			v-model:value="currentTab"
-			@close="handleTabsClose">
-			<NTabPane
-				v-for="(tab, index) of tabs"
-				:key="tab.path"
-				:name="tab.path"
-				:tab="tab.name"
+		<NTabs type="card" class="p-4" animated closable v-model:value="currentTab" @close="handleTabsClose">
+			<NTabPane v-for="(tab, index) of tabs" :key="tab.path" :name="tab.path" :tab="tab.name"
 				display-directive="show:lazy">
 				<Suspense>
-					<Table
-						:loading="evaluating"
-						:data="tableDatas![index] ?? []">
+					<Table :loading="evaluating" :data="tableDatas![index] ?? []">
 					</Table>
 					<template #fallback>
-						<NSpace
-							justify="center"
-							align="center"
-							class="h-550px">
+						<NSpace justify="center" align="center" class="h-550px">
 							<NSpin size="large" />
 						</NSpace>
 					</template>
 				</Suspense>
 			</NTabPane>
 
-			<NTabPane
-				name="Empty"
-				tab="Empty"
-				:closable="false"
-				v-if="alertEmptyVisible">
-				<AlertEmpty
-					title="未发现项目"
-					description="请点击手动添加目录"
-					class="cursor-pointer"
-					@click="openDirectory" />
+			<NTabPane name="Empty" tab="Empty" :closable="false" v-if="alertEmptyVisible">
+				<AlertEmpty title="未发现项目" description="请点击手动添加目录" class="cursor-pointer" @click="openDirectory" />
 			</NTabPane>
 
-			<NTabPane
-				name="Search"
-				tab="Search"
-				v-if="searching"
-				display-directive="show:lazy">
+			<NTabPane name="Search" tab="Search" v-if="searching" display-directive="show:lazy">
 				<Suspense>
-					<Table
-						close-mtime-sort
-						:loading="evaluating"
-						:data="searchResult">
+					<Table close-mtime-sort :loading="evaluating" :data="searchResult">
 					</Table>
 					<template #fallback>
-						<NSpace
-							justify="center"
-							align="center"
-							class="h-550px">
+						<NSpace justify="center" align="center" class="h-550px">
 							<NSpin size="large" />
 						</NSpace>
 					</template>
@@ -176,8 +142,7 @@ function handleTabsClose(path: string | number) {
 			<template #suffix>
 				<NSpace>
 					<ActionRefresh @refresh="refresh" />
-					<ActionDialog
-						@on-open-directory="handleDirectoryPath" />
+					<ActionDialog @on-open-directory="handleDirectoryPath" />
 				</NSpace>
 			</template>
 		</NTabs>

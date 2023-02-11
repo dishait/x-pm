@@ -1,1 +1,1 @@
-export const LoadingTextVNode = h('div', 'loading...')
+export const LoadingTextVNode = h("div", "loading...");

@@ -3,7 +3,9 @@
 		<template #trigger>
 			<NButton circle secondary @click="openDirectory">
 				<template #icon>
-					<NIcon size="15px"><AlbumsOutline /> </NIcon>
+					<NIcon size="15px">
+						<AlbumsOutline />
+					</NIcon>
 				</template>
 			</NButton>
 		</template>

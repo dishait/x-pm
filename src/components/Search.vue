@@ -33,15 +33,8 @@ function noSideSpace(value: string) {
 
 <template>
 	<NModal v-model:show="isShow">
-		<NInput
-			clearable
-			size="large"
-			class="rounded"
-			v-model:value="value"
-			transform-origin="center"
-			:allow-input="noSideSpace"
-			placeholder="输入搜索以查找"
-			style="
+		<NInput clearable size="large" class="rounded" v-model:value="value" transform-origin="center"
+			:allow-input="noSideSpace" placeholder="输入搜索以查找" style="
 				top: 60px;
 				width: 450px;
 				position: fixed;

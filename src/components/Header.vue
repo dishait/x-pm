@@ -21,10 +21,7 @@ const bytes = await getFolderSizeForce(CACHE_PATH)
 					<FileTrayOutline />
 				</NIcon>
 			</template>
-			<NNumberAnimation
-				:from="0"
-				:to="total"
-				show-separator />
+			<NNumberAnimation :from="0" :to="total" show-separator />
 		</NStatistic>
 		<NStatistic label="表缓存大小">
 			<template #prefix>
