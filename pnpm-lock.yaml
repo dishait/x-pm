@@ -20,7 +20,7 @@ specifiers:
   file-computed: ^0.6.2
   fs-extra: ^11.1.0
   fuse.js: ^6.6.2
-  go-get-folder-size: ^0.0.17
+  go-get-folder-size: ^0.0.18
   m-type-tools: ^0.4.0
   mem: ^9.0.2
   modern-css-reset: ^1.4.0
@@ -53,7 +53,7 @@ devDependencies:
   file-computed: 0.6.2
   fs-extra: 11.1.0
   fuse.js: 6.6.2
-  go-get-folder-size: 0.0.17
+  go-get-folder-size: 0.0.18
   m-type-tools: 0.4.0
   mem: 9.0.2
   modern-css-reset: 1.4.0
@@ -2566,8 +2566,8 @@ packages:
       slash: 4.0.0
     dev: true
 
-  /go-get-folder-size/0.0.17:
-    resolution: {integrity: sha512-hxRLR27oA7ffKRZdkbsNPlvYieLHCTUyf2aqeO6md84vi6CFnBzsWy5UohebPbARfGPAtiWOwwRCtAC3HhhNMQ==}
+  /go-get-folder-size/0.0.18:
+    resolution: {integrity: sha512-IseowH9l3ZPL+65LeGZ+p6KXc3i17mIsvqzcEyGrYolCkO8fzGx5RYoci4DpJfEyqNqk5FYNwy2l/PJJJQB69A==}
     hasBin: true
     dev: true
 

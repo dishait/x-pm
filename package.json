@@ -51,7 +51,7 @@
     "file-computed": "^0.6.2",
     "fs-extra": "^11.1.0",
     "fuse.js": "^6.6.2",
-    "go-get-folder-size": "^0.0.17",
+    "go-get-folder-size": "^0.0.18",
     "m-type-tools": "^0.4.0",
     "mem": "^9.0.2",
     "modern-css-reset": "^1.4.0",
