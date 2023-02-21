@@ -17,7 +17,7 @@ specifiers:
   electron: 23.1.0
   electron-builder: ^23.6.0
   execa: ^7.0.0
-  file-computed: ^0.8.0
+  file-computed: ^0.9.0
   fs-extra: ^11.1.0
   fuse.js: ^6.6.2
   go-get-folder-size: ^0.1.2
@@ -50,7 +50,7 @@ devDependencies:
   electron: 23.1.0
   electron-builder: 23.6.0
   execa: 7.0.0
-  file-computed: 0.8.0
+  file-computed: 0.9.0
   fs-extra: 11.1.0
   fuse.js: 6.6.2
   go-get-folder-size: 0.1.2
@@ -2345,8 +2345,8 @@ packages:
       pend: 1.2.0
     dev: true
 
-  /file-computed/0.8.0:
-    resolution: {integrity: sha512-YXRdcRyeemBx+xPi+YBsNbGTmNusGDprd0YYE1ectmpsNZmKssxEsfXDyZvuN3jirNYRQHPvXNFObEO4uUC5Kg==}
+  /file-computed/0.9.0:
+    resolution: {integrity: sha512-KFOt2UNlRI/7gp1Y2mniqJ/Z0rV/OImNYZ+NniM5xWRWGk/kRBquZZPxj8OZHQh1/hyIxAkJa9KEI3mgs70R4w==}
     dependencies:
       consola: 2.15.3
       destr: 1.2.2

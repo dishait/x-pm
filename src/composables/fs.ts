@@ -16,6 +16,7 @@ async function exists(path: string) {
 }
 
 export const fsComputed = createFsComputedWithStream({
+  post: true,
   cachePath: CACHE_PATH,
 });
 
