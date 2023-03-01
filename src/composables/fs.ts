@@ -1,7 +1,7 @@
 import { RowData } from "../types";
 import { lstat, readdir } from "node:fs/promises";
 import { createFsComputedWithStream } from "file-computed";
-import { getFolderSizeBin } from "go-get-folder-size/npm/bin";
+import { createGetFolderSizeBinIpc } from "go-get-folder-size/npm/bin";
 import { detectGoGetFolderSizeBin as _detectGoGetFolderSizeBin } from "./detect";
 
 import { CACHE_PATH, GO_GET_FOLDER_SIZE_BIN_PATH } from "./constant";
@@ -95,14 +95,16 @@ function detectGoGetFolderSizeBin() {
   return GO_GET_FOLDER_SIZE_BIN_PATH;
 }
 
+const { getFolderSizeWithIpc } = createGetFolderSizeBinIpc({
+  binPath: detectGoGetFolderSizeBin(),
+});
+
 export function getFolderSize(base: string) {
   return fsComputed(base, async () => {
     if (!(await exists(base))) {
       return 0;
     }
-    return getFolderSizeBin(base, false, {
-      binPath: detectGoGetFolderSizeBin(),
-    });
+    return getFolderSizeWithIpc(base, false);
   });
 }
 
@@ -110,7 +112,5 @@ export async function getFolderSizeForce(base: string) {
   if (!(await exists(base))) {
     return 0;
   }
-  return getFolderSizeBin(base, true, {
-    binPath: detectGoGetFolderSizeBin(),
-  });
+  return getFolderSizeWithIpc(base, true);
 }
